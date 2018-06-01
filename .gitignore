@@ -1,0 +1,10 @@
+/target
+/lib
+/classes
+/checkouts
+*.jar
+*.class
+/.lein-*
+/.env
+.nrepl-port
+/log
