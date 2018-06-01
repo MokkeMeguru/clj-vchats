@@ -13,9 +13,10 @@
 
 (defn disconnect! [channel channel-name status]
   (println "channel close")
-  (swap! channels (fn [chans] (assoc chans
-                                     (keyword channel-name)
-                                     (remove (partial = channel) ((keyword channel-name) chans))))))
+  (swap! channels
+         (fn [chans] (assoc chans
+                            (keyword channel-name)
+                            (remove #(= channel %) ((keyword channel-name) chans))))))
 
 (defn notify-clients [channel-name msg]
   (doseq [channel ((keyword channel-name) @channels)]
@@ -30,6 +31,3 @@
       (connect! channel channel-name)
       (on-close channel #(disconnect! channel channel-name %))
       (on-receive channel #(notify-clients channel-name %)))))
-
-
-(println @channels)
