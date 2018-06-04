@@ -1,0 +1,54 @@
+<!-- チャンネルリストの画面 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>LOGIN</title>
+    </head>
+    <body>
+        <div>
+            <p>{{error-message}}</p>
+            <p>Channel list</p>
+            <a href="../channel/elect">Sample Channel</a>
+        </div>
+        <div>
+            <p>
+                Make Channel
+            </p>
+            <form method="post">
+                <input name="chan_name" type="text" placeholder="channel name" />
+                <button type="submit">Make Channel</button>
+            </form>
+        </div>
+        <button id="logout">LOGOUT!</button>
+        <script>
+         var logoutButton = document.getElementById('logout');
+         logoutButton.addEventListener('click', function () {
+             console.log('???');
+             var xhr = new XMLHttpRequest();
+             xhr.open('GET', 'http://' + window.location.host + '/logout', true);
+             xhr.onload = function () {
+                 console.log(xhr.responseURL);
+                 window.location.href = xhr.responseURL;
+             }
+             xhr.send();
+         })
+        </script>
+        <p>Here is the channels' page<p>
+            <!-- scripts and styles -->
+            {% style "/assets/bootstrap/css/bootstrap.min.css" %}
+            {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
+            {% style "/css/screen.css" %}
+
+            {% script "/assets/jquery/jquery.min.js" %}
+            {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
+            {% script "/assets/tether/dist/js/tether.min.js" %}
+            {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+
+            <script type="text/javascript">
+             var csrfToken = "{{csrf-token}}";
+            </script>
+            <!-- {% script "/js/app.js" %} -->
+    </body>
+</html>

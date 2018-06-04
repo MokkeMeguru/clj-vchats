@@ -16,5 +16,6 @@ CREATE TABLE MESSAGES
 (id SERIAL PRIMARY KEY,
 chan_name VARCHAR (30) NOT NULL REFERENCES CHANNELS (chan_name),
 user_name VARCHAR (30) NOT NULL REFERENCES USERS (user_name),
-messages JSONB NOT NULL
+messages VARCHAR(200) NOT NULL,
+ltime timestamp
 );

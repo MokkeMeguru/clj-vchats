@@ -14,6 +14,7 @@
            [java.sql
             BatchUpdateException
             PreparedStatement]))
+
 (defstate ^:dynamic *db*
   :start (if-let [jdbc-url (env :database-url)]
            (conman/connect! {:jdbc-url jdbc-url})
@@ -58,3 +59,45 @@
   (sql-value [value] (to-pg-json value))
   IPersistentVector
   (sql-value [value] (to-pg-json value)))
+
+
+;; test ;;;;;;;;;;;;;;;;;;;;;
+;; (try (create-user!
+;;        {:name "elect" :pass "Meguru" :mail "e.tmailbank@gmail.com"})
+;;      (catch Exception e {:error "cannot create user"}))
+;; ==> (:error res) => nil : success insert
+;;
+;; (get-user {:name "elect"})
+;; nil => not found
+;;
+;; (delete-user! {:name "elect001"})
+;; (get-users)
+;;
+;; (try (create-user!
+;;        {:name "Mokke" :pass "Meguru" :mail "e.tmailbank@gmail.com"})
+;;      (catch Exception e {:error "cannot create user"}))
+;;(get-user {:name "Mokke"})
+
+
+;; (try (create-channel! {:chan_name "elect" :master_name "elect"})
+;;      (catch Exception e {:error "cannot create channel"}))
+;; (get-channels)
+
+;; (get-channel {:chan_name "elect"})
+;;
+;; (try (create-channel! {:chan_name "Mokke" :master_name "Mokke"})
+;;      (catch Exception e {:error "cannot create channel"}))
+;; (map :chan_name (get-channels))
+
+;; (save-message! {:chan_name "elect"
+;;                 :name "elect"
+;;                 :params  "Hello"
+;;                 :ltime (clj-time.local/local-now)})
+;; (get-messages)
+
+;; (reverse (map #(assoc % :ltime (clj-time.coerce/to-long (:ltime %)))
+;;               (map #(clojure.set/rename-keys % {:user_name :name
+;;                                                 :messages :params})
+;;                    (get-message {:chan_name "elect"}))))
+
+;; (delete-message! {:chan_name "elect"})

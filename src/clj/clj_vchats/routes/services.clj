@@ -9,7 +9,8 @@
             [clj-vchats.routes.home :as home] ;; added!
             [reitit.coercion.spec :as rcs] ;; added!
             [clj-vchats.routes.ws :as ws] ;; added!
-            ))
+            [clj-vchats.routes.services.auth :as auth]
+            [clj-vchats.db.core :as db]))
 
 (defn service-routes []
   (ring/router
@@ -41,11 +42,9 @@
         :get {:coercion rcs/coercion
               :parameters {:path {:id string?}}
               :handler (fn [req]
-                         (println (keys req))
-                         (println "channels: "(-> req :parameters :path :id))
-                         (ws/ws-handler req))
-              }}]
-      ]
+                         ;; (println (keys req))
+                         ;; (println "channels: "(-> req :parameters :path :id))
+                         (ws/ws-handler req))}}]]
      [ "/api"
       {:swagger {:id ::default}}
       ["/swagger.json"
@@ -125,11 +124,11 @@ websocket の処理で用いていたユーザグループのリストも同時�
                                 {:status 200
                                  :body
                                  {:channels
-                                  ["elect" "Meguru"]}})}}]
+                                  (map :chan_name (db/get-channels))}})}}]
       ["/:chan/get-messages" {:summary "メッセージを取得します。"
                               :description
                               "自分が閲覧しているチャンネルの過去ログを取得します。\n
-取得内容は時系列的に早い順なベクトルのリストで、ベクトルは [user-name timestamp message] というフォーマットになっています。"
+取得内容は時系列的に早い順なマップのリストで、マップは {ltime : 送信時間. name : ユーザ名, params : メッセージ} というフォーマットになっています。"
                               :get
                               {:coercion rcs/coercion
                                :parameters {:path {:chan string?}}
@@ -138,26 +137,29 @@ websocket の処理で用いていたユーザグループのリストも同時�
                                  (let [c-name (-> parameters :path :chan)]
                                    {:status 200
                                     :body {:messages
-                                           ((keyword c-name)
-                                            {:elect
-                                             [["elect" (str (l/local-now)) "Hello!"]
-                                              ["Meguru" (str (l/local-now)) "Hello!!"]]
-                                             :Meguru
-                                             [["Meguru" (str (l/local-now)) "what?"]
-                                              ["elect" (str (l/local-now)) "Oh, my god ..."]]})}}))}}]
-      ["/login" {:summary "ログインをします。"
-                 :description "ユーザ登録が済んでいるならばログインすることが出来ます。\n
-elect / Meguru のみログインできます。(パスワードは任意です)"
-                 :get {:coercion rcs/coercion
-                       :parameters {:query {:name string?
-                                            :pass string?}}
-                       :responses {200 {:body {:login? boolean?}}}
-                       :handler (fn [{:keys [parameters]}]
-                                  (let [user-name (-> parameters :query :name)]
-                                    {:status 200
-                                     :body {:login?
-                                            (if (some #{user-name} ["elect" "Meguru"])
-                                              false true)}}))}}]
+                                           (reverse
+                                            (map #(assoc % :ltime (clj-time.coerce/to-long (:ltime %)))
+                                                 (map #(clojure.set/rename-keys % {:user_name :name
+                                                                                   :messages :params})
+                                                      (db/get-message {:chan_name c-name}))))
+                                           }}))}}]
+      ;; ["/login" {:summary "ログインをします。"
+;;                  :description "ユーザ登録が済んでいるならばログインすることが出来ます。\n
+;; elect / Meguru のみログインできます。(パスワードは任意です)"
+;;                  :get {:coercion rcs/coercion
+;;                        :parameters {:query {:name string?
+;;                                             :pass string?}}
+;;                        :handler(fn [header]
+;;                                  (let  [a (-> header
+;;                                               (merge
+;;                                                (ring.util.response/redirect
+;;                                                 "/user-page/channels"))
+;;                                               (assoc-in [:cookies] {:identity "bar"}
+;;                                                         ))]
+;;                                    (println "login " a)
+;;                                    (println "end")
+;;                                    a)
+;;                                   )}}]
       ["/:user/logout" {:summary "ログアウトをします。"
                         :post {:coercion rcs/coercion
                                :handler (fn [_]
@@ -173,14 +175,11 @@ Future: メールアドレス認証を行います。"
                                                 :mail string?}}
                            :responses {200 {:body {:resister? boolean?}}}
                            :handler (fn [{:keys [parameters]}]
-                                      (let [user-name (-> parameters :query :name)
-                                            pass (-> parameters :query :pass)
-                                            mail (-> parameters :query :mail)]
-                                          {:status 200
-                                           :body
-                                           {:resister?
-                                            (if (some #{user-name} ["elect" "Meguru"])
-                                              false true)}}))}}]]])
+                                      {:status 200
+                                       :body
+                                       {:resister?
+                                        (auth/resister! (-> parameters :query))
+                                        }})}}]]])
    {:data {:middleware [params/wrap-params
                         muuntaja/wrap-format
                         swagger/swagger-feature
