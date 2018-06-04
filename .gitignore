@@ -8,3 +8,5 @@
 /.env
 .nrepl-port
 /log
+/.cljs_rhino_repl
+
