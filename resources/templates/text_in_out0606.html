@@ -1,0 +1,50 @@
+<html lang="ja">
+<!-- sorce https://www.psi-net.co.jp/blog/?p=1130 -->
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>text_in_out</title>
+		<style>
+			#mainWrap { width:500px; float:right; }  
+			#sideWrap { width:250px; float:left; }  
+		</style>
+	</head>
+	<body>
+		<div id="mainwrap">
+		<p><canvas id="canvas" width="200" height="400"><canvas></p>
+		</div>
+		
+		<div id="sidewrap">
+		<p><input type="text" id="test_input" name="test_input" style="width:300px;"  value=""/></p>
+		<p><input type="button" onclick="consoleOutput();AddStringToTextarea();" value="“Še" /></p>
+		<p><textarea cols="40" rows="12" id="sampleInputedList" readonly></textarea><br></p>
+		</div>
+
+		
+		<script>
+		function consoleOutput(){
+				let testInput = document.getElementById('test_input');
+				//console.log('testInputEé¨€' + testInput);
+				console.log(testInput.value);
+			}
+			
+		window.onload = function(){
+				console.log('');
+		};
+		
+		function AddStringToTextarea() {
+		   let UserString = document.getElementById('test_input').value;
+   		   document.getElementById('sampleInputedList').value += UserString + "\n";
+		}
+		
+		const request = new XMLHttpRequest();
+		request.open("GET", `http://elect-remote.softether.net:3000/swagger-ui/index.html{elect}/get-messages`);
+		request.addEventListener("load", (event) => {
+		    console.log(event.target.status); // => 200
+    		console.log(event.target.responseText); // => "{...}"
+		});
+		request.send();
+		
+		
+		</script>
+	</body>
+</html>
