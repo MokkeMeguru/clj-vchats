@@ -43,7 +43,7 @@
              success: function(data) {//请求成功完成后要执行的方法
                  //each循环 使用$.each方法遍历返回的数据date
                  $.each(data.channels, function(i, item) {
-                     var str = '<a href="../channel/'+ item +'">'+ item +'</a>';
+                     var str = '<a href="../channel/'+ item +'">'+ item +'</a>\n';
                      console.log(str);
                      $("#channel_list").append(str);
                  })
