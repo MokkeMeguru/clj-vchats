@@ -11,10 +11,10 @@
         <div>
             <p>{{error-message}}</p>
             <p>Channel list</p>
-            <li id="channel_list" class="list">
+            <ul id="channel_list" class="list">
 
-                <lo><a href="../channel/elect">Sample Channel</a></lo>
-            </li>
+                <li><a href="../channel/elect">Sample Channel</a></li>
+            </ul>
         </div>
         <div>
             <p>
@@ -46,7 +46,7 @@
              success: function(data) {//请求成功完成后要执行的方法
                  //each循环 使用$.each方法遍历返回的数据date
                  $.each(data.channels, function(i, item) {
-                     var str = '<lo><a href="../channel/'+ item +'">'+ item +'</a></lo>';
+                     var str = '<li><a href="../channel/'+ item +'">'+ item +'</a></li>';
                      console.log(str);
                      $("#channel_list").append(str);
                  })
