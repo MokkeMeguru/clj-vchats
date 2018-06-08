@@ -8,7 +8,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
     <body>
-        <div>
+        <div id="channel_list">
             <p>{{error-message}}</p>
             <p>Channel list</p>
             <a href="../channel/elect">Sample Channel</a>
@@ -45,6 +45,7 @@
                  $.each(data.channels, function(i, item) {
                      var str = '<a href="../channel/'+ item +'">'+ item +'</a>';
                      console.log(str);
+                     $("#channel_list").append(str);
                  })
              }
          })
