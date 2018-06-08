@@ -26,7 +26,6 @@
          // var uri = "ws://" + location.host + "/test/websocket/elect";
          // webSocket = new WebSocket(uri);
          // webSocket.send("Hello!");
-
          var channel_name = (window.location.pathname).split("/")[2];
          // 接続先URI
          var uri = "ws://" + location.host + "/test/websocket/" + channel_name;
@@ -116,6 +115,9 @@
 
          // 初期処理登録
          $(init);
+
+         // ---------------------------------------------------
+         // get-message
         </script>
     </head>
     <body>
