@@ -8,10 +8,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
     <body>
-        <div id="channel_list">
+        <div>
             <p>{{error-message}}</p>
             <p>Channel list</p>
-            <a href="../channel/elect">Sample Channel</a>
+            <li id="channel_list" class="list">
+
+                <lo><a href="../channel/elect">Sample Channel</a></lo>
+            </li>
         </div>
         <div>
             <p>
@@ -43,7 +46,7 @@
              success: function(data) {//请求成功完成后要执行的方法
                  //each循环 使用$.each方法遍历返回的数据date
                  $.each(data.channels, function(i, item) {
-                     var str = '<a href="../channel/'+ item +'">'+ item +'</a>\n';
+                     var str = '<lo><a href="../channel/'+ item +'">'+ item +'</a></lo>';
                      console.log(str);
                      $("#channel_list").append(str);
                  })
