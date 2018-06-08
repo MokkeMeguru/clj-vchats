@@ -1,0 +1,7 @@
+
+#channel_container {
+    display: flex;
+}
+.channel_panel {
+    margin: 20px;
+}

@@ -29,7 +29,7 @@
 
          var channel_name = (window.location.pathname).split("/")[2];
          // 接続先URI
-         var uri = "wss://" + location.host + "/test/websocket/" + channel_name;
+         var uri = "ws://" + location.host + "/test/websocket/" + channel_name;
          // var uri = "ws://" + location.host + "/test/websocket/{user-name}";
          console.log(uri);
          // WebSocketオブジェクト
@@ -120,7 +120,6 @@
     </head>
     <body>
         <p>Here is the channel page<p>
-            <p>ahsdhgiouahrgadsfgjaoigawejgljadlfk</p>
             <input type="text" data-name="message" size="100" />
             <hr />
             <div data-name="chat"></div>
