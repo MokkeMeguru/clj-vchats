@@ -34,6 +34,19 @@
              }
              xhr.send();
          })
+
+         $.ajax({
+             url: "get-channels.json",//json文件位置
+             type: "GET",//请求方式为get
+             dataType: "json", //返回数据格式为json
+             success: function(data) {//请求成功完成后要执行的方法
+                 //each循环 使用$.each方法遍历返回的数据date
+                 $.each(data.channels, function(i, item) {
+                     var str = '<a href="../channel/elect">'+ item +'</a>';
+
+                 })
+             }
+         })
         </script>
         <p>Here is the channels' page<p>
             <!-- scripts and styles -->
