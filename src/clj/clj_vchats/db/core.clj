@@ -70,7 +70,7 @@
 ;; (get-user {:name "elect"})
 ;; nil => not found
 ;;
-;; (delete-user! {:name "elect001"})
+;;(delete-user! {:name "elect"})
 ;; (get-users)
 ;;
 ;; (try (create-user!
@@ -88,6 +88,7 @@
 ;; (try (create-channel! {:chan_name "Mokke" :master_name "Mokke"})
 ;;      (catch Exception e {:error "cannot create channel"}))
 ;; (map :chan_name (get-channels))
+;; (delete-channel! {:chan_name "           "})
 
 ;; (save-message! {:chan_name "elect"
 ;;                 :name "elect"
