@@ -93,9 +93,9 @@
                  :post {:parameters {:form-params {:chan_name string?}}
                         :handler (fn [req]
                                    (let [chan_name (-> req  :form-params (get "chan_name"))
-                                         len (count chan_name)
+                                         len (count (clojure.string/trim chan_name))
                                          uname (:value (get (:cookies req) "identity"))]
-                                     (if (and (> len 5)
+                                     (if (and (> len 3)
                                               (db/get-user {:name uname})
                                               (not (db/get-channel {:chan_name chan_name})))
                                        (do
