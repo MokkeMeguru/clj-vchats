@@ -42,11 +42,12 @@
          $.ajax({
              url: "/vchats-api/get-channels",//json文件位置
              type: "GET",//请求方式为get
-             dataType: "json", //返回数据格式为json
+             dataType: "json", //json
              success: function(data) {//请求成功完成后要执行的方法
-                 //each循环 使用$.each方法遍历返回的数据date
+                 //each循
                  $.each(data.channels, function(i, item) {
                      var str = '<li><a href="../channel/'+ item +'">'+ item +'</a></li>';
+                     str.trim();
                      console.log(str);
                      $("#channel_list").append(str);
                  })
