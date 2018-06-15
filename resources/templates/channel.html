@@ -4,8 +4,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>LOGIN</title>
+        <title>3-v-tuber</title>
         <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
         <script type="text/javascript">
          // note -----------------------------------
          // - how to send face information
@@ -22,14 +24,14 @@
          //                                params : "hogehoge"}));
          // ----------------------------------------
 
+         // ---------------------
+         
+         // -----------------------
+
          // test
-         // var uri = "ws://" + location.host + "/test/websocket/elect";
-         // webSocket = new WebSocket(uri);
-         // webSocket.send("Hello!");
          var channel_name = (window.location.pathname).split("/")[2];
          // 接続先URI
          var uri = "ws://" + location.host + "/test/websocket/" + channel_name;
-         // var uri = "ws://" + location.host + "/test/websocket/{user-name}";
          console.log(uri);
          // WebSocketオブジェクト
          var webSocket = null;
@@ -58,9 +60,11 @@
          // 接続イベント
          function onOpen(event) {
              chat("接続しました。");
-             webSocket.send(JSON.stringify({type : "greeting",
-                                            name : "elect",
-                                            params : "チャンネルは" + channel_name}));
+             if (Cookies.get('identity')) {
+                 webSocket.send(JSON.stringify({type : "greeting",
+                                                name : Cookies.get('identity'),
+                                                params : "チャンネルは" + channel_name}));
+             }
          }
 
          // メッセージ受信イベント
@@ -91,9 +95,8 @@
                  // 存在チェック
                  if (message && webSocket) {
                      // メッセージ送信
-                     // webSocket.send("" + message);
                      webSocket.send(JSON.stringify({type : "message",
-                                                    name : "elect",
+                                                    name : Cookies.get('identity'),
                                                     params : message})); // name : get from cookie
                      // メッセージ初期化
                      $("[data-name='message']").val("");
@@ -116,8 +119,7 @@
          // 初期処理登録
          $(init);
 
-         // ---------------------------------------------------
-         // get-message
+         
         </script>
     </head>
     <body>
@@ -125,16 +127,57 @@
             <input type="text" data-name="message" size="100" />
             <hr />
             <div data-name="chat"></div>
-            <!-- scripts and styles -->
-            {% style "/assets/bootstrap/css/bootstrap.min.css" %}
-            {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
-            {% style "/css/screen.css" %}
 
-            {% script "/assets/jquery/jquery.min.js" %}
-            {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
-            {% script "/assets/tether/dist/js/tether.min.js" %}
-            {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+            <!-- canvas-list -->
+            <div class="canvases">
+                <span><canvas id="mydisplay-container" class="display-container"
+                              width="640px" height="480px"
+                              style="background-color:black;"></canvas></span>
+                <span><canvas id="opdisplay-container" class="display-container"
+                              width="640px" height=480px"
+                              style="background-color:black;"></canvas></span>
+                <div>
+                    <!-- canvas-list -->
 
+                    <!-- scripts and styles -->
+                    {% style "/assets/bootstrap/css/bootstrap.min.css" %}
+                    {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
+                    {% style "/css/screen.css" %}
+
+                    {% script "/assets/jquery/jquery.min.js" %}
+                    {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
+                    {% script "/assets/tether/dist/js/tether.min.js" %}
+                    {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+                    <script type="text/javascript">
+                     // ---------------------------------------------------
+                     // get-messages
+                     const request = new XMLHttpRequest();
+                     
+                     request.open("GET", "/vchats-api/"+ (window.location.pathname).split("/")[2] +"/get-messages");
+                     request.addEventListener("load", (event) => {
+                         console.log(event.target.status); // => 200
+                         console.log(event.target.responseText); // => "{...}"
+                     });
+                     request.send();
+                     // ---------------------------------------------------
+
+                     // set canvas ----------------------------------------
+                     var width = 300;
+                     var height = 200;
+
+                     var stage = new PIXI.Stage(0x000000);
+
+                     var renderer = PIXI.autoDetectRenderer(width, height);
+
+                     document.getElementById("mydisplay-container").appendChild(renderer.view);
+
+                     function animate(){
+                         requestAnimationFrame(animate);
+                     }
+
+                     animate();
+                     // --------------------------------------------------------------
+                    </script>
             <script type="text/javascript">
              var csrfToken = "{{csrf-token}}";
             </script>

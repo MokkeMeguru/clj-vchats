@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>3-v-tuber</title>
+        <style>
+         .display-container{
+             background-color:black;
+             margin:5px;
+             padding:5px;
+
+         }
+         .nav{
+             float:left;
+         }
+
+         h1{
+             text-align: center;
+             font-family: 'fantasy';
+         }
+
+
+        </style>
+        <!--  <link href="./style.css" rel="stylesheet" type="text/css"> -->
+    </head>
+    <body>
+        <h1>Enjoy your V-tuver life!</h1><hr>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        <script type="module" src="/static/SpeakerTag.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
+        <speaker-tag></speaker-tag> <!--雎ｸ蛹ｻ笘・ｸｺ・ｪ-->
+        <div id="main-container" class="area1">
+            <span class="nav">
+                <ul><input  type="text" id="test_input"  name="test_input" style="width:200px;"  value=""/></ul>
+                <ul><input type="button" onclick="consoleOutput();AddStringToTextarea();conect();" style="width: 200px;" value="投稿" /></ul>
+                <ul>投稿記録</ul>
+                <textarea cols="25" rows="20"  id="sampleInputedList" readonly></textarea></span>
+            <span><canvas id="mydisplay-container" class="display-container" width="500px" height="400px"></canvas></span>
+            <span><canvas id="opdisplay-container" class="display-container" width="500px" height=400px"></canvas></span>
+                </ul>
+        </div>
+        <br><br><br><hr>
+        <p></p>
+
+
+        <script>
+
+
+         function consoleOutput(){
+             let testInput = document.getElementById('test_input');
+             //console.log('testInput郢晢ｽｻ鬯ｯ・ｨ・つ' + testInput);
+             console.log(testInput.value);
+         }
+
+         window.onload = function(){
+             console.log('');
+         };
+
+         function AddStringToTextarea() {
+             let UserString = document.getElementById('test_input').value;
+             document.getElementById('sampleInputedList').value += UserString + "\n";
+         }
+
+         const request = new XMLHttpRequest();
+         // ---------------------
+         var r = document.cookie.split(';');
+         var content;
+         r.forEach(function (val) {
+             content = value.split('=');
+         });
+         // -----------------------
+         request.open("GET", "/vchats-api/"+ content["identity"] +"/get-messages");
+         request.addEventListener("load", (event) => {
+             console.log(event.target.status); // => 200
+             console.log(event.target.responseText); // => "{...}"
+         });
+         request.send();
+
+
+
+         var width = 300;
+         var height = 200;
+
+         // 郢ｧ・ｹ郢昴・繝ｻ郢ｧ・ｸ郢ｧ蜑・ｽｽ諛奇ｽ謀
+         var stage = new PIXI.Stage(0x000000);
+
+         // 郢晢ｽｬ郢晢ｽｳ郢敖郢晢ｽｩ郢晢ｽｼ郢ｧ蜑・ｽｽ諛奇ｽ謀
+         var renderer = PIXI.autoDetectRenderer(width, height);
+
+         // 郢晢ｽｬ郢晢ｽｳ郢敖郢晢ｽｩ郢晢ｽｼ邵ｺ・ｮview郢ｧ螂ｪOM邵ｺ・ｫ髴托ｽｽ陷賀邵ｺ蜷ｶ・謀
+         document.getElementById("mydisplay-container").appendChild(renderer.view);
+
+         // 騾包ｽｻ陷剃ｸ環ｰ郢ｧ蟲ｨ縺帷ｹ晏干ﾎ帷ｹｧ・､郢晏現縺檎ｹ晄じ縺夂ｹｧ・ｧ郢ｧ・ｯ郢晏現・定抄諛奇ｽ謀
+         var texture = PIXI.Texture.fromImage('static/img/snow.png');
+         var MAX_SNOW = 300;
+         var snowimgs = [];
+
+         var point = new PIXI.Sprite(texture);
+         stage.addChild(point);
+
+         var event = null;
+         window.onmousemove = handleMouseMove;
+         function handleMouseMove(event) {
+             event = event || window.event; // IE陝・ｽｾ陟｢魏
+             point.x = event.clientX - texture.orig.width/2;
+             point.y = event.clientY - texture.orig.height/2;
+             renderer.render(stage);
+         }
+
+         function animate(){
+         }
+
+         requestAnimationFrame(animate);
+
+
+         function conect(){
+             $.ajax({
+                 type: 'GET',
+                 url: '/channel/elect',
+                 //  entryId : i,//何番目に開始したかをオプションで保持
+                 dataType: 'html',
+                 success: function(data) {
+                     //取得したデータを即挿入せず、
+                     //通信開始した順番に配列に格納する
+                     entryDataList[this.entryId] = data;
+                 }
+             });
+         }
+
+        </script>
+
+    </body>
+</html>

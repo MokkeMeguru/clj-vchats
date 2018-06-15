@@ -100,7 +100,7 @@
                                               (not (db/get-channel {:chan_name chan_name})))
                                        (do
                                          (db/create-channel! {:chan_name chan_name
-                                                              :master_name uname})
+                                                             :master_name uname})
                                          (ring.util.response/redirect (str "/channel/" chan_name)))
                                        (ring.util.response/redirect "/channels?message=mcexception"))))
                         :middleware [ring.middleware.cookies/wrap-cookies
