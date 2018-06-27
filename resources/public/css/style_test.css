@@ -78,10 +78,10 @@ button:hover{
 }
 a{
     color: #802D2D;
-    font-size: 10px;
+    font-size: 15px;
     position:relative;
-    top: -90px;
-    left:205px;
+    top: -85px;
+    left:165px;
     font-family: Bahnschrift;
 
 }
