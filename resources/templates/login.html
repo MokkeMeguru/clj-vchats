@@ -7,15 +7,19 @@
         <title>LOGIN</title>
     </head>
     <body>
+    <div class="wrap">
         <p>{{error-message}}<p>
         <p>Here is the login page<p>
-            <form method="post">
-                <input type="text" name="username" placeholder="username">
-                <input type="text" name="password" placeholder="password">
-                <button type="submit">click me</button>
-            </form>
+        <form method="post">
+            <i class="fa fa-user"></i>
+            <input type="text" name="username" placeholder="Username">
+            <i class="fa fa-lock"></i>
+            <input type="password" name="password" placeholder="Password" >
+            <button type="submit">Click Me</button>
+
+        </form>
         </p>
-        <a href="/resister">resister page is here<a>
+        <a href="/resister">resister page is here<a></div>
         <!-- scripts and styles -->
         {% style "/assets/bootstrap/css/bootstrap.min.css" %}
         {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
