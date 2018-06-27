@@ -1,0 +1,149 @@
+@charset "UTF-8";
+body{
+    background-color: #333333;
+    font-family: Bahnschrift;
+    border-radius: 20px;
+    width: 300px;
+    height: 350px;
+    margin: auto;
+    position: absolute;
+    top: -200px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+}
+.chli{
+    position:relative;
+
+
+}
+.chmk{
+    position: relative;
+
+}
+/*title*/
+.chli p{
+    color: #FF5959;
+    font-size: 30px;
+    text-align: center;
+    position: relative;
+    top: 20px;
+}
+.chmk p{
+    color: white;
+    font-size: 30px;
+
+    text-align: center;
+    position: relative;
+    top: 20px;
+}
+/*list*/
+ul, li{
+    margin: 0; /*外边距*/
+    padding: 0; /*内边距*/
+    list-style-type: none;
+}
+ul {
+    justify-content: space-between; /*等距插空格排列*/
+    align-content: left; /*居中对齐*/
+
+}
+
+li {
+    flex: auto;
+    padding-top: 15px;
+    position: relative;
+    width: 300px;
+    border-bottom:1px solid #757575;
+}
+
+li a {
+    padding-left: 6px; /*设置内边距扩大能点击的区域*/
+     /*单位格内居中*/
+    text-decoration: none; /*去除下划线*/
+    font-weight: bold; /*加粗*/
+    color: #fff; /*字体颜色*/
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+a {
+    border: none;
+}
+a:hover{
+    color: #FF5959;
+}
+
+/*Top*/
+
+
+/*botton*/
+button {
+    background-color: #FF5959;
+    border: none;
+    color: white;
+    padding: 3px 15px 3px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 22px;
+    margin: 10px 0 0 0;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius:2px;
+    font-family: Bahnschrift;
+    position: relative;
+    top: 10px;
+}
+#mkch{
+    background-color: #FF5959;
+}
+#mkch:hover{
+    background-color: #FF9B9B;
+    color: #B22C2C;
+}
+#logout{
+    position: relative;
+    left: 180px;
+    top:-33px;
+    background-color: #757575;
+}
+#logout:hover{
+    background-color: #BFBFBF;
+    color: #333333;
+}
+input{
+    background-color: #333333;
+    margin: 0 0 -5px 0;
+    font-family: Bahnschrift;
+}
+input{
+    box-sizing: border-box;
+    font-size: 20px;
+    height: 40px;
+    width: 300px;
+    border:1px solid #c8cccf;
+    color:white;
+    -web-kit-appearance:none;
+    -moz-appearance: none;
+    display:block;
+    outline:0;
+
+    text-decoration:none;
+    padding-left:25px;
+
+}
+input:focus{
+    border:1px solid #FF5959;
+}
+i.fa-home{
+    color: #c8cccf;
+    position:relative;
+    top: 30px;
+    left: 5px;
+}
+i.fa-chevron-right{
+    color: #c8cccf;
+    position: relative;
+}
