@@ -19,3 +19,8 @@ user_name VARCHAR (30) NOT NULL REFERENCES USERS (user_name),
 messages VARCHAR(200) NOT NULL,
 ltime timestamp
 );
+
+CREATE TABLE AUDIOS
+(id BIGINT PRIMARY KEY,
+chan_name VARCHAR (30) NOT NULL REFERENCES CHANNELS (chan_name),
+ audio bytea NOT NULL);

@@ -59,3 +59,9 @@ WHERE chan_name = :chan_name
 -- :doc delete messages with chan_name
 DELETE FROM MESSAGES
 WHERE chan_name = :chan_name
+
+-- :name save-audios! :! :1
+-- :doc save audio
+INSERT INTO AUDIOS
+(id, chan_name, audio)
+VALUES (:id, :chan_name, :audio)
