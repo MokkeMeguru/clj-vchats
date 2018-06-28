@@ -61,6 +61,8 @@
   (sql-value [value] (to-pg-json value)))
 
 
+
+
 ;; test ;;;;;;;;;;;;;;;;;;;;;
 ;; (try (create-user!
 ;;        {:name "elect" :pass "Meguru" :mail "e.tmailbank@gmail.com"})
