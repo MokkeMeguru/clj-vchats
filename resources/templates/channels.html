@@ -8,21 +8,22 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
     <body>
-        <div>
+    <div class="chli">
             <p>{{error-message}}</p>
             <p>Channel list</p>
             <ul id="channel_list" class="list">
 
-                <li><a href="../channel/elect">Sample Channel</a></li>
+                <li> <i class="fa fa-chevron-right "></i><a href="../channel/elect">Sample Channel</a></li>
             </ul>
         </div>
-        <div>
+        <div class="chmk">
             <p>
                 Make Channel
             </p>
             <form method="post">
+                <i class="fa fa-home "></i>
                 <input name="chan_name" type="text" placeholder="channel name" />
-                <button type="submit">Make Channel</button>
+                <button id="mkch" type="submit">Make Channel</button>
             </form>
         </div>
         <button id="logout">LOGOUT!</button>
@@ -46,7 +47,7 @@
              success: function(data) {//请求成功完成后要执行的方法
                  //each循
                  $.each(data.channels, function(i, item) {
-                     var str = '<li><a href="../channel/'+ item +'">'+ item +'</a></li>';
+                     var str = '<li> <i class="fa fa-chevron-right "></i><a href="../channel/'+ item +'">'+ item +'</a></li>';
                      str.trim();
                      console.log(str);
                      $("#channel_list").append(str);
@@ -59,7 +60,7 @@
             {% style "/assets/bootstrap/css/bootstrap.min.css" %}
             {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
             {% style "/css/screen.css" %}
-
+            {% style "/css/style_channel_list.css" %}
             {% script "/assets/jquery/jquery.min.js" %}
             {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
             {% script "/assets/tether/dist/js/tether.min.js" %}
