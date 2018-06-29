@@ -3,3 +3,9 @@ Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "sr
 notifying browser that file changed:  target/cljsbuild/public/js/out/goog/deps.js
 notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
 notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Notifying browser that CSS file changed: resources/public/css/RESISTER.css
+Notifying browser that CSS file changed: resources/public/css/style_channel_list.css
+Notifying browser that CSS file changed: resources/public/css/style_test.css
+Notifying browser that CSS file changed: resources/public/css/style_test.css
+Notifying browser that CSS file changed: resources/public/css/style_test.css
+Notifying browser that CSS file changed: resources/public/css/style_test.css
