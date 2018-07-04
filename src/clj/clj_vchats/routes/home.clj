@@ -50,7 +50,8 @@
                                   (response/header "Content-Type" "text/plain; charset=utf-8")))}}]
    ["/resister" {:get {:handler (fn [req] (resister-page req))}
                  :post {:handler (fn [req]
-                                   (let [uname (-> req :form-params (get "username"))
+                                   (let [uname (if-let
+                                                   [n (-> req :form-params (get "username"))] n "nil")
                                          pass (-> req :form-params (get "password"))
                                          mail (-> req :form-params (get "mail"))]
                                      (if (filter false? (map #(> (count %) 54) [uname pass mail]))
@@ -73,9 +74,11 @@
    ["/login" {:get {:handler login-page
                     :middleware [middleware/wrap-csrf]}
               :post {:handler (fn [req]
+                                (println "POST LOGIN!!!")
                                 (let [uname (-> req :form-params (get "username"))
                                       pass (-> req :form-params (get "password"))]
-                                  (if (auth/login! uname pass)
+                                  (if uname (println uname) (println "???"))
+                                  (if (and uname pass (auth/login! uname pass))
                                     (-> req
                                         (merge (ring.util.response/redirect "/channels"))
                                         (assoc-in [:cookies] {:identity uname}))
@@ -96,6 +99,7 @@
                                          len (count (clojure.string/trim chan_name))
                                          uname (:value (get (:cookies req) "identity"))]
                                      (if (and (> len 3)
+                                              uname
                                               (db/get-user {:name uname})
                                               (not (db/get-channel {:chan_name chan_name})))
                                        (do
@@ -117,7 +121,6 @@
                                                     (ring.util.response/redirect "/login?message=plogin"))))
                                :middleware [ring.middleware.cookies/wrap-cookies
                                             middleware/wrap-csrf]}}]
-
    ["/logout" {:get {:handler (fn [req]
                                 (let [newreq (-> req
                                        (merge (ring.util.response/redirect "/login"))

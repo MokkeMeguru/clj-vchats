@@ -10,7 +10,8 @@
             [reitit.coercion.spec :as rcs] ;; added!
             [clj-vchats.routes.ws :as ws] ;; added!
             [clj-vchats.routes.services.auth :as auth]
-            [clj-vchats.db.core :as db]))
+            [clj-vchats.db.core :as db]
+            [clj-vchats.routes.services.closing :refer [create-close-key]]))
 
 (defn service-routes []
   (ring/router
@@ -110,14 +111,46 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                        :body {:channel-name c-name}}))}}]
       ["/:channel/close-channnel" {:summary "チャンネルを閉じます。"
                                    :description
-                                   "チャンネルを閉じ、ログを消します。\n
-websocket の処理で用いていたユーザグループのリストも同時に削除します。"
+                                   "チャンネルを消すためのワンタイムパスワードを発行します。チャンネルを閉じる具体的な手順は、ここでチャンネルを消すためのパスワードを入手しそのパスワードを使って {:close key} という json を 該当の WebSocket に流すと、サーバがキーをチェックしてチャンネルを閉じます。チャンネルが閉じられたことは {:closed true} という json が Websocket から流れてくるのを確認して下さい"
                                    :post {:coercion rcs/coercion
-                                          :parameters {:path {:chan string?}}
-                                          :handler (fn [{:keys [parameters]}]
-                                                     (let [chan (-> parameters :path :chan)]
-                                                      {:state 200
-                                                       :body "Closed!"}))}}]
+                                          :parameters {:path {:channel string?}}
+                                          :handler (fn [req]
+                                                     (let [parameters (:parameters req)
+                                                           uname (:value
+                                                                  (get (:cookies req) "identity"))
+                                                           chan (-> parameters :path :channel)]
+                                                       (println uname ":" chan ":" (:master_name
+                                                                                    (db/get-channel {:chan_name chan})))
+                                                       ;;(create-close-key chan)
+                                                       (if (= uname
+                                                              (:master_name
+                                                               (db/get-channel {:chan_name chan})))
+                                                         {:state 200
+                                                          :body (create-close-key chan)}
+                                                         {:status 406
+                                                          :body "error"})))
+                                          :middleware [ring.middleware.cookies/wrap-cookies]}}]
+      ["/:channel/invite" {:summary "他のユーザを招待します"
+                                   :description
+                                   "他のユーザを招待します。ここで招待するためのワンタイムパスワードを入手して下さい。それから Websocket に、{:invite key :name name} という json を送って下さい。サーバでパスワードをチェックして、認証されれば、 name に招待状が届きます。これに name が賛成することでウィンドウがもう一枚生成され、複数画面でのチャットを可能にします"
+                                   :post {:coercion rcs/coercion
+                                          :parameters {:path {:channel string?}}
+                                          :handler (fn [req]
+                                                     (let [parameters (:parameters req)
+                                                           uname (:value
+                                                                  (get (:cookies req) "identity"))
+                                                           chan (-> parameters :path :channel)]
+                                                       (println uname ":" chan ":" (:master_name
+                                                                                    (db/get-channel {:chan_name chan})))
+                                                       ;;(create-close-key chan)
+                                                       (if (= uname
+                                                              (:master_name
+                                                               (db/get-channel {:chan_name chan})))
+                                                         {:state 200
+                                                          :body (create-close-key chan)}
+                                                         {:status 406
+                                                          :body "error"})))
+                                          :middleware [ring.middleware.cookies/wrap-cookies]}}]
       ["/get-channels" {:summary "現在開いているチャンネルを取得します。"
                         :get {:handler
                               (fn [_]

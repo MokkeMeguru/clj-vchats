@@ -1,7 +1,7 @@
 (ns clj-vchats.routes.services.audio
   (:require [org.httpkit.client :as http]
             [clojure.xml :as xml]
-            ;;[clojure.data.codec :as codec]
+            [clojure.data.codec.base64 :as b64]
             )
   (:import [javax.net.ssl SSLEngine SNIHostName SSLParameters])
   (:use [clojure.java.shell :only [sh]]))
@@ -28,7 +28,7 @@
                              :pitch pitch}
                             :content [text]}]}]})))
 
-(defn get-audio [#^String room #^String text
+(defn get-audio [#^String text
                  & {:keys [voice rate pitch] :or {voice "sumire" rate 1.0 pitch 1.0}}]
   (let [dt (clj-time.coerce/to-long (clj-time.local/local-now))
         {:keys [status headers body error] :as resp}
@@ -46,7 +46,7 @@
 
 ;; (body-message "こんにちわ" "sumire")
 
-(defn get->tmp->bin [bin]
+(defn raw->wav [bin]
   (when bin
     (let [tfile (java.io.File/createTempFile "./tmp-" ".raw")
           t-path (.getAbsolutePath tfile)
@@ -64,9 +64,28 @@
                        buf))]
       copy-buf)))
 
+;; -----------------------------------------
 
-;; (let [buf (get->tmp->bin (.bytes (get-audio "elect" "こんにちは" :voice "sumire" :rate 1.25 :pitch 2.0)))]
-;;   (with-open [w (clojure.java.io/output-stream (java.io.File/createTempFile "./test-" ".wav"))]
-;;     (.write w buf)))
+;; please check exist of the room.
 
+(defn wav->base64 [wav]
+  (b64/encode wav))
 
+(defn get-audio-b64 [text & {:keys [voice rate pitch] :or {voice "sumire" rate 1.0 pitch 1.0}}]
+  (-> (get-audio text :voice voice :rate rate :pitch pitch)
+      .bytes
+      raw->wav
+      wav->base64
+      String.))
+
+;; (def tmp
+;;   (let [buf (-> (get-audio
+;;                  "こんにちわ"
+;;                  :voice
+;;                  "sumire"
+;;                  :rate 1.0
+;;                  :pitch 1.5)
+;;                 .bytes
+;;                 raw->wav
+;;                 wav->base64)]
+;;     buf))

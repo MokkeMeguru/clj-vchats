@@ -24,10 +24,6 @@
          //                                params : "hogehoge"}));
          // ----------------------------------------
 
-         // ---------------------
-         
-         // -----------------------
-
          // test
          var channel_name = (window.location.pathname).split("/")[2];
          // 接続先URI
@@ -70,6 +66,15 @@
          // メッセージ受信イベント
          function onMessage(event) {
              if (event && event.data) {
+//------------------------------------------------------------
+                 var obj = JSON.parse(event.data);
+                 console.log(obj.type);
+                 if (obj.type == "voice-data") {
+                     var voice = obj.params;
+                     var audio = new Audio("data:audio/wav;base64," + voice);
+                     audio.play();
+                 }
+//-------------------------------------------------------------
                  chat(event.data);
              }
          }
@@ -97,29 +102,33 @@
                      // メッセージ送信
                      webSocket.send(JSON.stringify({type : "message",
                                                     name : Cookies.get('identity'),
-                                                    params : message})); // name : get from cookie
-                     // メッセージ初期化
-                     $("[data-name='message']").val("");
+                                                    params : message}));
+                     webSocket.send(JSON.stringify({type : "talk",
+                                                    name : Cookies.get('identity'),
+                                                    params :{text : message}}));
+                         
+                         // メッセージ初期化
+                         $("[data-name='message']").val("");
                  }
              }
          }
 
-         // チャットに表示
-         function chat(message) {
-             // 100件まで残す
-             var chats = $("[data-name='chat']").find("div");
-             while (chats.length >= 100) {
-                 chats = chats.last().remove();
-             }
-             // メッセージ表示
-             var msgtag = $("<div>").text(message);
-             $("[data-name='chat']").prepend(msgtag);
-         }
+                         // チャットに表示
+                         function chat(message) {
+                             // 100件まで残す
+                             var chats = $("[data-name='chat']").find("div");
+                             while (chats.length >= 100) {
+                                 chats = chats.last().remove();
+                             }
+                             // メッセージ表示
+                             var msgtag = $("<div>").text(message);
+                             $("[data-name='chat']").prepend(msgtag);
+                         }
 
-         // 初期処理登録
-         $(init);
+                         // 初期処理登録
+                         $(init);
 
-         
+                         
         </script>
     </head>
     <body>
