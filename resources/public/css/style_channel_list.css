@@ -100,8 +100,8 @@ button {
     background-color: #FF5959;
 }
 #mkch:hover{
-    background-color: #FF9B9B;
-    color: #B22C2C;
+    background-color: white;
+    color: #FF5959;
 }
 #logout{
     position: relative;

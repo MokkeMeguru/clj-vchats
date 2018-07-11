@@ -73,8 +73,8 @@ button {
     transition-duration: 0.4s;
 }
 button:hover{
-    background-color: #FF9B9B;
-    color: #B22C2C;
+    background-color: white;
+    color: #FF5959;
 }
 a{
     color: #802D2D;
