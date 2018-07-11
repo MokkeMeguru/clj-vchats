@@ -25,7 +25,10 @@
 
 (defn resister-page [req]
   (if-let [message (-> req :query-params (get "message"))]
-    (layout/render "resister.html" {:error-message "That name is already used"})
+    (condp = message
+      "invp" (layout/render "resister.html" {:error-message "Invaid information"})
+      "aexist" (layout/render "resister.html" {:error-message "That name is already used"})
+      (layout/render "resister.html" {:error-message "Unknown error"}))
     (layout/render "resister.html")))
 
 (defn channels-page [req]
@@ -54,7 +57,7 @@
                                                    [n (-> req :form-params (get "username"))] n "nil")
                                          pass (-> req :form-params (get "password"))
                                          mail (-> req :form-params (get "mail"))]
-                                     (if (filter false? (map #(> (count %) 54) [uname pass mail]))
+                                     (if (and (< 4 (count pass)) (< 4 (count uname)) (filter false? (map #(> (count %) 54) [uname pass mail])))
                                        (if-not (db/get-user {:name uname})
                                          (try
                                            (do
@@ -77,8 +80,7 @@
                                 (println "POST LOGIN!!!")
                                 (let [uname (-> req :form-params (get "username"))
                                       pass (-> req :form-params (get "password"))]
-                                  (if uname (println uname) (println "???"))
-                                  (if (and uname pass (auth/login! uname pass))
+                                  (if (and (< 4 (count uname)) pass (auth/login! uname pass))
                                     (-> req
                                         (merge (ring.util.response/redirect "/channels"))
                                         (assoc-in [:cookies] {:identity uname}))
@@ -125,6 +127,7 @@
                                 (let [newreq (-> req
                                        (merge (ring.util.response/redirect "/login"))
                                        (assoc :cookies {:identity ""}))]
+                                  (println "logout!")
                                   newreq))
                      :middleware [middleware/wrap-csrf
                                   ring.middleware.cookies/wrap-cookies]}}]

@@ -7,8 +7,8 @@
         <title>RESISTER</title>
     </head>
     <body>
-        <p>Here is the resistration page<p>
-        <p>{{error-message}}<p>
+        <p class="text-center" style="width:400px;left:-50px">Here is the resistration page<p>
+        <p class="text-center" style="width:400px;left:-50px;position:relative">{{error-message}}<p>
             <form method="post">
             <i class="fa fa-user"></i>
             <input type="text" name="username" placeholder="username">
@@ -32,6 +32,6 @@
             <script type="text/javascript">
              var csrfToken = "{{csrf-token}}";
             </script>
-            {% script "/js/app.js" %}
+            <!-- {% script "/js/app.js" %} -->
     </body>
 </html>
