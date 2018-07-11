@@ -51,7 +51,7 @@ input{
     outline:0;
     padding:0 1px;
     text-decoration:none;
-    padding-left: 1.5em;
+    padding-left: 1.3em;
 
 }
 input:focus{
@@ -88,6 +88,6 @@ a{
 i.fa{
     color: #c8cccf;
     position:relative;
-    top: 30px;
+    top: 32px;
     left: 5px;
 }
