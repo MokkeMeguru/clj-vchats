@@ -8,6 +8,7 @@ mail VARCHAR (200) NOT NULL
 CREATE TABLE CHANNELS
 (chan_name VARCHAR (30) UNIQUE,
 master_name VARCHAR (30) REFERENCES USERS (user_name),
+inviter_name VARCHAR (30) REFERENCES USERS (user_name),
 info VARCHAR (30),
 PRIMARY KEY (chan_name, master_name)
 );
@@ -23,4 +24,4 @@ ltime timestamp
 CREATE TABLE AUDIOS
 (id BIGINT PRIMARY KEY,
 chan_name VARCHAR (30) NOT NULL REFERENCES CHANNELS (chan_name),
- audio bytea NOT NULL);
+audio bytea NOT NULL);

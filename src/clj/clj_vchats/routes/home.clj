@@ -159,5 +159,3 @@
                               :handler channel-page
                               :middleware [ring.middleware.cookies/wrap-cookies
                                            middleware/wrap-csrf]}}]]])
-
-

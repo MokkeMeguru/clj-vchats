@@ -86,6 +86,7 @@
 ;; (get-channels)
 
 ;; (get-channel {:chan_name "elect"})
+;; (:master_name (get-channel {:chan_name "elect"}))
 ;;
 ;; (try (create-channel! {:chan_name "Mokke" :master_name "Mokke"})
 ;;      (catch Exception e {:error "cannot create channel"}))
@@ -105,7 +106,29 @@
 
 ;; (delete-message! {:chan_name "elect"})
 
+;; (get-channels)
 
+(let [invite-name "elect"
+      chan-name "testchannel"]
+  (if (:inviter_name (get-inviter {:chan_name chan-name}))
+    (str "Already Exist")
+    (if
+       (zero? (set-inviter! {:inviter_name "elect"
+                             :chan_name chan-name}))
+     (str "Invalid User")
+     (str "Yes"))))
 
+(delete-inviter! {:chan_name "testchannel"})
 
+;; (delete-channel! {:chan_name "hogehoge"})
 
+;; (get-inviter {:chan_name "testchannel"})
+;; (get-channel {:chan_name "testchannel"})
+
+;; (get-user {:name "elec"})
+
+;; (zero?
+;;  (set-inviter! {:inviter_name "elect"
+;;                 :chan_name "testchannel"}))
+;; (get-channels)
+;; (get-inviter {:chan_name "testchannel"})

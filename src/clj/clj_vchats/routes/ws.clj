@@ -3,6 +3,7 @@
             [clj-time.local :as l]
             [clojure.data.json :as json]
             [clj-vchats.db.core :as db]
+            [clj-vchats.routes.services.closing :as closing]
             [clj-vchats.routes.services.audio :refer [get-audio-b64]]))
 
 (def channels (atom {}))
@@ -27,21 +28,30 @@
     (if (db/get-channel {:chan_name channel-name})
       (condp = (:type mmsg)
         "close"
-        (doseq [channel in-channels]
-          (send! channel
-                 (json/write-str {:type "close" :params (str "This channel will be close by " (:name mmsg))})))
+        (let [authorization (:params mmsg)]
+          (when (closing/check-close-key channel-name authorization)
+            (do
+              (closing/close-channel channel-name)
+              (doseq [channel in-channels]
+               (send! channel
+                      (json/write-str {:type "close" :params (str "This channel will be close by " (:name mmsg))}))))))
         "message"
         (do
           (db/save-message! (-> mmsg (dissoc :type)
                                 (assoc :chan_name channel-name)
                                 (assoc :ltime (clj-time.local/local-now))))
           (doseq [channel in-channels] (send! channel msg)))
+        "invite"
+        nil
         "talk"
-        (let [params (:params mmsg)
+        (let [uname (:name mmsg)
+              params (:params mmsg)
               text (:text params)
               voice (if (:voice params) (:voice params) "sumire")
               rate (if (and (:rate params) (> (:rate params) 0.0) (> 2.0 (:rate params))) (:rate params) 1.0)
               pitch (if (and (:pitch params) (> (:pitch params) 0.0) (> 2.0 (:rate params))) (:pitch params) 1.0)]
+          (print mmsg)
+          ;; TODO: check uname in (channel's master_name invite_name)
           (if text
             (let [b64-voice (get-audio-b64 text :voice voice :rate rate :pitch pitch)] ;; TODO: check validation
               (doseq [channel in-channels]

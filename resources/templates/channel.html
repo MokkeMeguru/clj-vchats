@@ -66,7 +66,7 @@
          // メッセージ受信イベント
          function onMessage(event) {
              if (event && event.data) {
-//------------------------------------------------------------
+                 //------------------------------------------------------------
                  var obj = JSON.parse(event.data);
                  console.log(obj.type);
                  if (obj.type == "voice-data") {
@@ -74,7 +74,7 @@
                      var audio = new Audio("data:audio/wav;base64," + voice);
                      audio.play();
                  }
-//-------------------------------------------------------------
+                 //-------------------------------------------------------------
                  chat(event.data);
              }
          }
@@ -106,29 +106,55 @@
                      webSocket.send(JSON.stringify({type : "talk",
                                                     name : Cookies.get('identity'),
                                                     params :{text : message}}));
-                         
-                         // メッセージ初期化
-                         $("[data-name='message']").val("");
+                     // メッセージ初期化
+                     $("[data-name='message']").val("");
                  }
              }
          }
 
-                         // チャットに表示
-                         function chat(message) {
-                             // 100件まで残す
-                             var chats = $("[data-name='chat']").find("div");
-                             while (chats.length >= 100) {
-                                 chats = chats.last().remove();
-                             }
-                             // メッセージ表示
-                             var msgtag = $("<div>").text(message);
-                             $("[data-name='chat']").prepend(msgtag);
-                         }
+         // チャットに表示
+         function chat(message) {
+             // 100件まで残す
+             var chats = $("[data-name='chat']").find("div");
+             while (chats.length >= 100) {
+                 chats = chats.last().remove();
+             }
+             // メッセージ表示
+             var msgtag = $("<div>").text(message);
+             $("[data-name='chat']").prepend(msgtag);
+         }
 
-                         // 初期処理登録
-                         $(init);
+         // 初期処理登録
+         $(init);
 
-                         
+         // close channel
+         var channel_name = (window.location.pathname).split("/")[2];
+         var btn =  document.querySelector('input[name=close-button]');
+         var pass;
+         $(function (){
+             $('#close-button').click
+             (function() {
+                 $.ajax({
+                     url: ("http://" + (window.location.host) + "/vchats-api/"
+                         + (window.location.pathname).split("/")[2] +  "/close-channel"),
+                     type: 'POST',
+                 }).done(function(data) {
+                     alert("SUCCESS\n next: send messaage to websocket");
+                     pass = data;
+                     console.log (pass);
+                     webSocket.send(JSON.stringify({type : "close",
+                                                    name : Cookies.get('identity'),
+                                                    params : pass}));
+                     window.location.href  = "http://" + (window.location.host) + "/channels";
+                 }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
+                     alert("ERROR");
+                     console.log(XMLHttpRequest);
+                     console.log(testStatus);
+                     console.log(errorThrown);
+                 })
+             });
+         });
+
         </script>
     </head>
     <body>
@@ -137,6 +163,11 @@
             <hr />
             <div data-name="chat"></div>
 
+            <div>
+                <form>
+                    <input id="close-button" type="button" value="Close Channel">
+                </form>
+            </div>
             <!-- canvas-list -->
             <div class="canvases">
                 <span><canvas id="mydisplay-container" class="display-container"
@@ -161,7 +192,6 @@
                      // ---------------------------------------------------
                      // get-messages
                      const request = new XMLHttpRequest();
-                     
                      request.open("GET", "/vchats-api/"+ (window.location.pathname).split("/")[2] +"/get-messages");
                      request.addEventListener("load", (event) => {
                          console.log(event.target.status); // => 200

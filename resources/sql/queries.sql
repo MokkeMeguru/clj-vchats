@@ -66,3 +66,23 @@ INSERT INTO AUDIOS
 (id, chan_name, audio)
 VALUES (:id, :chan_name, :audio)
 
+-- :name get-inviter :? :1
+-- :doc get invite user
+SELECT inviter_name FROM CHANNELS
+WHERE chan_name = :chan_name
+
+-- :name get-master :? :1
+-- :doc get master user
+SELECT master_name FROM CHANNELS
+WHERE chan_name = :chan_name
+
+-- :name set-inviter! :! :1
+-- :doc set inviter
+UPDATE CHANNELS
+SET inviter_name = :inviter_name
+WHERE chan_name = :chan_name
+
+-- :name delete-inviter! :! :1
+UPDATE CHANNELS
+SET inviter_name = NULL
+WHERE chan_name = :chan_name

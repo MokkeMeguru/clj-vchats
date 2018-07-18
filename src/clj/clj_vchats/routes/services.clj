@@ -109,9 +109,10 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                     (let [c-name (-> parameters :query :channel-name)]
                                       {:status 200
                                        :body {:channel-name c-name}}))}}]
-      ["/:channel/close-channnel" {:summary "チャンネルを閉じます。"
+      ["/:channel/close-channel" {:summary "チャンネルを閉じます。"
                                    :description
-                                   "チャンネルを消すためのワンタイムパスワードを発行します。チャンネルを閉じる具体的な手順は、ここでチャンネルを消すためのパスワードを入手しそのパスワードを使って {:close key} という json を 該当の WebSocket に流すと、サーバがキーをチェックしてチャンネルを閉じます。チャンネルが閉じられたことは {:closed true} という json が Websocket から流れてくるのを確認して下さい"
+                                   "チャンネルを消すためのワンタイムパスワードを発行します。
+エラーならばステータスコード406で error という文字列が返ってきます。チャンネルを閉じる具体的な手順は、ここでチャンネルを消すためのパスワードを入手しそのパスワードを使って {:type close :params key} という json を 該当の WebSocket に流すと、サーバがキーをチェックしてチャンネルを閉じます。チャンネルが閉じられたことは {:closed true} という json が Websocket から流れてくるのを確認して下さい"
                                    :post {:coercion rcs/coercion
                                           :parameters {:path {:channel string?}}
                                           :handler (fn [req]
@@ -119,20 +120,24 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                                            uname (:value
                                                                   (get (:cookies req) "identity"))
                                                            chan (-> parameters :path :channel)]
-                                                       (println uname ":" chan ":" (:master_name
-                                                                                    (db/get-channel {:chan_name chan})))
+                                                       (println uname ":" chan ":"
+                                                                (:master_name
+                                                                 (db/get-channel {:chan_name chan})))
                                                        ;;(create-close-key chan)
-                                                       (if (= uname
-                                                              (:master_name
-                                                               (db/get-channel {:chan_name chan})))
-                                                         {:state 200
-                                                          :body (create-close-key chan)}
-                                                         {:status 406
-                                                          :body "error"})))
+                                                       (println (create-close-key chan uname))
+                                                       (create-close-key chan uname)
+                                                       ;; (if (= uname
+                                                       ;;        (:master_name
+                                                       ;;         (db/get-channel {:chan_name chan})))
+                                                       ;;   {:state 200
+                                                       ;;    :body (create-close-key chan)}
+                                                       ;;   {:status 406
+                                                       ;;    :body "error"})
+                                                       ))
                                           :middleware [ring.middleware.cookies/wrap-cookies]}}]
       ["/:channel/invite" {:summary "他のユーザを招待します"
                                    :description
-                                   "他のユーザを招待します。ここで招待するためのワンタイムパスワードを入手して下さい。それから Websocket に、{:invite key :name name} という json を送って下さい。サーバでパスワードをチェックして、認証されれば、 name に招待状が届きます。これに name が賛成することでウィンドウがもう一枚生成され、複数画面でのチャットを可能にします"
+                                   "他のユーザを招待します。ここで招待するためのワンタイムパスワードを入手して下さい。それから Websocket に、{:type invite :params {:key key :name name}} という json を送って下さい。サーバでパスワードをチェックして、認証されれば、 name に招待状が届きます。これに name が賛成することでウィンドウがもう一枚生成され、複数画面でのチャットを可能にします"
                                    :post {:coercion rcs/coercion
                                           :parameters {:path {:channel string?}}
                                           :handler (fn [req]
