@@ -1,0 +1,85 @@
+h1 {
+  color:aliceblue;
+  font-family: Bahnschrift;
+}
+
+
+.text{
+  color: aliceblue;
+  font-family: Bahnschrift;
+  font-size:24px;
+  width: 500px;
+  border-radius:2px;  
+}
+
+
+.close-btn {
+  align-content: center;
+  background-color: #FF5959;
+  border: none;
+  color: white;
+  margin-right: 0px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  padding: 5px 5px;
+  border-radius:2px;
+  font-family: Bahnschrift;
+} 
+
+
+body{
+  background-color:#333333;
+  left :0px;
+}
+
+.display-container{
+background-color:blue;
+margin:5px;
+padding:0px; 
+}
+.nav{
+  float:left;
+  color:white;
+}
+
+.left{
+  float:left;
+  color:white;
+}
+
+h1{
+text-align: center;
+font-family: Bahnschrift;
+}
+
+input{
+  background-color: #333333;
+  font-family: Bahnschrift;
+  align-self: auto;
+}
+
+input{
+  box-sizing: border-box;
+  font-size: 15px;
+  height: 40px;
+  width: 300px;
+  border:1px solid #c8cccf;
+  color:white;
+  -web-kit-appearance:none;
+  -moz-appearance: none;
+  display:block;
+  outline:0;
+  text-decoration:none;
+  padding-left: 0px;
+}
+
+div{
+    text-align: center;
+    padding: 4px 0 4px;
+}
+
+input:focus{
+  border:1px solid #FF5959;
+}

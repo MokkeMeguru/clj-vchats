@@ -108,17 +108,17 @@
 
 ;; (get-channels)
 
-(let [invite-name "elect"
-      chan-name "testchannel"]
-  (if (:inviter_name (get-inviter {:chan_name chan-name}))
-    (str "Already Exist")
-    (if
-       (zero? (set-inviter! {:inviter_name "elect"
-                             :chan_name chan-name}))
-     (str "Invalid User")
-     (str "Yes"))))
+;; (let [invite-name "elect"
+;;       chan-name "testchannel"]
+;;   (if (:inviter_name (get-inviter {:chan_name chan-name}))
+;;     (str "Already Exist")
+;;     (if
+;;        (zero? (set-inviter! {:inviter_name "elect"
+;;                              :chan_name chan-name}))
+;;      (str "Invalid User")
+;;      (str "Yes"))))
 
-(delete-inviter! {:chan_name "testchannel"})
+;; (delete-inviter! {:chan_name "testchannel"})
 
 ;; (delete-channel! {:chan_name "hogehoge"})
 

@@ -38,7 +38,7 @@
   "if (check-close-key - -), he can close the channel
   recommend:
   if this function had run,
-  send the message {:close (message)} for this channel's users"
+  send the message {:type close (message)} for this channel's users"
   [chan-name]
   (db/delete-message! {:chan_name chan-name})
   (db/delete-channel! {:chan_name chan-name}))

@@ -8,6 +8,8 @@
         <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+        {% style "/assets/bootstrap/css/bootstrap.min.css" %}
+        <link rel="stylesheet" href="/css/channel-style.css" type="text/css">
         <script type="text/javascript">
          // note -----------------------------------
          // - how to send face information
@@ -27,7 +29,7 @@
          // test
          var channel_name = (window.location.pathname).split("/")[2];
          // 接続先URI
-         var uri = "ws://" + location.host + "/test/websocket/" + channel_name;
+         var uri = "wss://" + location.host + "/test/websocket/" + channel_name;
          console.log(uri);
          // WebSocketオブジェクト
          var webSocket = null;
@@ -43,8 +45,11 @@
          // 接続
          function open() {
              if (webSocket == null) {
+                 console.log("init websocket");
                  // WebSocket の初期化
                  webSocket = new WebSocket(uri);
+                 console.log("initialized!");
+                 console.log(webSocket);
                  // イベントハンドラの設定
                  webSocket.onopen = onOpen;
                  webSocket.onmessage = onMessage;
@@ -74,14 +79,20 @@
                      var audio = new Audio("data:audio/wav;base64," + voice);
                      audio.play();
                  }
+                 else if(obj.type == "message"){
+                     chat(event.data);
+                 }
+                 else if(obj.type == "close" || obj.type == "invite") {
+                     chat(event.data);
+                 }
                  //-------------------------------------------------------------
-                 chat(event.data);
+                 // chat(event.data);
              }
          }
 
          // エラーイベント
          function onError(event) {
-             //chat("エラーが発生しました。");
+             chat("エラーが発生しました。");
          }
 
          // 切断イベント
@@ -100,12 +111,16 @@
                  // 存在チェック
                  if (message && webSocket) {
                      // メッセージ送信
-                     webSocket.send(JSON.stringify({type : "message",
-                                                    name : Cookies.get('identity'),
-                                                    params : message}));
-                     webSocket.send(JSON.stringify({type : "talk",
-                                                    name : Cookies.get('identity'),
-                                                    params :{text : message}}));
+                     webSocket.onopen = () =>
+                         webSocket.send(
+                             JSON.stringify({type : "message",
+                                             name : Cookies.get('identity'),
+                                             params : message}));
+                     webSocket.onopen = () =>
+                         webSocket.send(
+                             JSON.stringify({type : "talk",
+                                             name : Cookies.get('identity'),
+                                             params :{text : message}}));
                      // メッセージ初期化
                      $("[data-name='message']").val("");
                  }
@@ -120,7 +135,13 @@
                  chats = chats.last().remove();
              }
              // メッセージ表示
-             var msgtag = $("<div>").text(message);
+             console.log("message" + message);
+             var p = message.substring(0,1);
+             if (p == "{") {
+                 var msgtag = $("<div>").text(JSON.parse(message).params);
+             } else {
+                 var msgtag = $("<div>").text(message);
+             }
              $("[data-name='chat']").prepend(msgtag);
          }
 
@@ -158,68 +179,78 @@
         </script>
     </head>
     <body>
-        <p>Here is the channel page<p>
-            <input type="text" data-name="message" size="100" />
-            <hr />
-            <div data-name="chat"></div>
+        <h1>Enjoy your V-tuber life!</h1>
+        <hr>
 
-            <div>
-                <form>
-                    <input id="close-button" type="button" value="Close Channel">
-                </form>
+        <div class="container text-center" style="margin:37px">
+            <div class="row" style="flex-wrap: nowrap;">
+                <div class="col-xs-2">
+                    <div><h1>投稿記録</h1></div>
+                    <div class="text-center">
+                        <input type="text" data-name="message" size="100">
+                    </div>
+                    <div class="log" data-name="chat" style="width:20em;height:20em;background-color:white;color:black"></div>
+                </div>
+                
+                <div class="col-xs-4">
+                    <canvas id="mydisplay-container" class="display-container" width="500px" height="400px"></canvas>
+                </div>
+                <div class="col-xs-4">y
+                    <canvas id="opdisplay-container" class="display-container" width="500px" height=400px"></canvas>
+                </div>
             </div>
-            <!-- canvas-list -->
-            <div class="canvases">
-                <span><canvas id="mydisplay-container" class="display-container"
-                              width="640px" height="480px"
-                              style="background-color:black;"></canvas></span>
-                <span><canvas id="opdisplay-container" class="display-container"
-                              width="640px" height=480px"
-                              style="background-color:black;"></canvas></span>
-                <div>
-                    <!-- canvas-list -->
+        </div>
+        <hr>
+        <div class="container">
+            <div class="raw text-center">
+                <p>
+                    <input class="close-btn" type="button" value="ライブを終了"></p>
+            </div>
+        </div>
+        <!-- canvas-list -->
 
-                    <!-- scripts and styles -->
-                    {% style "/assets/bootstrap/css/bootstrap.min.css" %}
-                    {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
-                    {% style "/css/screen.css" %}
+        <!-- scripts and styles -->
+        
+        {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
+            
 
-                    {% script "/assets/jquery/jquery.min.js" %}
-                    {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
-                    {% script "/assets/tether/dist/js/tether.min.js" %}
-                    {% script "/assets/bootstrap/js/bootstrap.min.js" %}
-                    <script type="text/javascript">
-                     // ---------------------------------------------------
-                     // get-messages
-                     const request = new XMLHttpRequest();
-                     request.open("GET", "/vchats-api/"+ (window.location.pathname).split("/")[2] +"/get-messages");
-                     request.addEventListener("load", (event) => {
-                         console.log(event.target.status); // => 200
-                         console.log(event.target.responseText); // => "{...}"
-                     });
-                     request.send();
-                     // ---------------------------------------------------
+            {% script "/assets/jquery/jquery.min.js" %}
+            {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
+            
+            {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+            <script type="text/javascript">
+             // ---------------------------------------------------
+             // get-messages
+             const request = new XMLHttpRequest();
+             request.open("GET", "/vchats-api/"+ (window.location.pathname).split("/")[2] +"/get-messages");
+             request.addEventListener("load", (event) => {
+                 console.log(event.target.status); // => 200
+                 console.log(event.target.responseText); // => "{...}"
+             });
+             request.send();
+             // ---------------------------------------------------
 
-                     // set canvas ----------------------------------------
-                     var width = 300;
-                     var height = 200;
+             // set canvas ----------------------------------------
+             var width = 300;
+             var height = 200;
 
-                     var stage = new PIXI.Stage(0x000000);
+             var stage = new PIXI.Stage(0x000000);
 
-                     var renderer = PIXI.autoDetectRenderer(width, height);
+             var renderer = PIXI.autoDetectRenderer(width, height);
 
-                     document.getElementById("mydisplay-container").appendChild(renderer.view);
+             document.getElementById("mydisplay-container").appendChild(renderer.view);
 
-                     function animate(){
-                         requestAnimationFrame(animate);
-                     }
+             function animate(){
+                 requestAnimationFrame(animate);
+             }
 
-                     animate();
-                     // --------------------------------------------------------------
-                    </script>
+             animate();
+             // --------------------------------------------------------------
+            </script>
             <script type="text/javascript">
              var csrfToken = "{{csrf-token}}";
             </script>
-            
     </body>
+    
+    
 </html>
