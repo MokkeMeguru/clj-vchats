@@ -37,10 +37,14 @@
                       (json/write-str {:type "close" :params (str "This channel will be close by " (:name mmsg))}))))))
         "message"
         (do
+          (print "message:" mmsg)
           (db/save-message! (-> mmsg (dissoc :type)
                                 (assoc :chan_name channel-name)
                                 (assoc :ltime (clj-time.local/local-now))))
-          (doseq [channel in-channels] (send! channel msg)))
+          (doseq [channel in-channels]
+            (do
+              (print channel msg "\n")
+              (send! channel msg))))
         "invite"
         nil
         "talk"
