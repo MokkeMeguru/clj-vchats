@@ -82,7 +82,11 @@
                  else if(obj.type == "message"){
                      chat(event.data);
                  }
-                 else if(obj.type == "close" || obj.type == "invite") {
+                 else if(obj.type == "close") {
+                     chat(event.data);
+                     window.location.replace("channels");
+                 }
+                 else if(obj.type == "invite") {
                      chat(event.data);
                  }
                  //-------------------------------------------------------------
@@ -111,16 +115,14 @@
                  // 存在チェック
                  if (message && webSocket) {
                      // メッセージ送信
-                     webSocket.onopen = () =>
-                         webSocket.send(
-                             JSON.stringify({type : "message",
-                                             name : Cookies.get('identity'),
-                                             params : message}));
-                     webSocket.onopen = () =>
-                         webSocket.send(
-                             JSON.stringify({type : "talk",
-                                             name : Cookies.get('identity'),
-                                             params :{text : message}}));
+                     webSocket.send(
+                         JSON.stringify({type : "message",
+                                         name : Cookies.get('identity'),
+                                         params : message}));
+                     webSocket.send(
+                         JSON.stringify({type : "talk",
+                                         name : Cookies.get('identity'),
+                                         params :{text : message}}));
                      // メッセージ初期化
                      $("[data-name='message']").val("");
                  }
@@ -149,32 +151,30 @@
          $(init);
 
          // close channel
-         var channel_name = (window.location.pathname).split("/")[2];
+         var close_name = "https://" + window.location.host + "/vchats-api/" + window.location.pathname.split("/")[2] +  "/close-channel";
+         console.log(close_name);
          var btn =  document.querySelector('input[name=close-button]');
          var pass;
-         $(function (){
-             $('#close-button').click
-             (function() {
-                 $.ajax({
-                     url: ("http://" + (window.location.host) + "/vchats-api/"
-                         + (window.location.pathname).split("/")[2] +  "/close-channel"),
-                     type: 'POST',
-                 }).done(function(data) {
-                     alert("SUCCESS\n next: send messaage to websocket");
-                     pass = data;
-                     console.log (pass);
-                     webSocket.send(JSON.stringify({type : "close",
-                                                    name : Cookies.get('identity'),
-                                                    params : pass}));
-                     window.location.href  = "http://" + (window.location.host) + "/channels";
-                 }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
-                     alert("ERROR");
-                     console.log(XMLHttpRequest);
-                     console.log(testStatus);
-                     console.log(errorThrown);
-                 })
-             });
-         });
+         var closeevent = function() {
+                     console.log("clicked");
+                     $.ajax({
+                         url: close_name,
+                         type: 'POST',
+                     }).done(function(data) {
+                         alert("SUCCESS\n next: send messaage to websocket");
+                         pass = data;
+                         console.log (pass);
+                         webSocket.send(JSON.stringify({type : "close",
+                                                        name : Cookies.get('identity'),
+                                                        params : pass}));
+                         window.location.href = window.location.replace("channels");
+                     }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
+                         alert("ERROR");
+                         console.log(XMLHttpRequest);
+                         console.log(testStatus);
+                         console.log(errorThrown);
+                     })
+                 }
 
         </script>
     </head>
@@ -204,10 +204,9 @@
         <div class="container">
             <div class="raw text-center">
                 <p>
-                    <input class="close-btn" type="button" value="ライブを終了"></p>
+                    <input class="close-btn" onclick="closeevent()" type="button" value="ライブを終了"></p>
             </div>
         </div>
-        <!-- canvas-list -->
 
         <!-- scripts and styles -->
         
