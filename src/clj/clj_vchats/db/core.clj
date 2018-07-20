@@ -131,4 +131,8 @@
 ;;  (set-inviter! {:inviter_name "elect"
 ;;                 :chan_name "testchannel"}))
 ;; (get-channels)
+
 ;; (get-inviter {:chan_name "testchannel"})
+;; (:master_name (get-channel {:chan_name "111111"}))
+;; (:inviter_name (get-channel {:chan_name "111111"}))
+

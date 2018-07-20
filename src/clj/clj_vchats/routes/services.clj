@@ -109,10 +109,23 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                     (let [c-name (-> parameters :query :channel-name)]
                                       {:status 200
                                        :body {:channel-name c-name}}))}}]
+      ["/:channel/get-talker" {:summary "話者を取得します。"
+                               :description "そのチャンネルの話者を取得します。これを確認して canvas の表示数を調節して下さい。"
+                               :get {:coercion rcs/coercion
+                                     :parameters {:path {:channel string?}}
+                                     :handler (fn [req]
+                                                (let [parameters (:parameters req)
+                                                      chan (-> parameters :path :channel)
+                                                      info (db/get-channel {:chan_name chan})
+                                                      master-name (:master_name info)
+                                                      inviter-name (:inviter_name info)]
+                                                  {:state 200
+                                                   :body {:master master-name
+                                                          :inviter inviter-name}}))}}]
       ["/:channel/close-channel" {:summary "チャンネルを閉じます。"
                                    :description
                                    "チャンネルを消すためのワンタイムパスワードを発行します。
-エラーならばステータスコード406で error という文字列が返ってきます。チャンネルを閉じる具体的な手順は、ここでチャンネルを消すためのパスワードを入手しそのパスワードを使って {:type close :params key} という json を 該当の WebSocket に流すと、サーバがキーをチェックしてチャンネルを閉じます。チャンネルが閉じられたことは {:closed true} という json が Websocket から流れてくるのを確認して下さい"
+エラーならばステータスコード406で error という文字列が返ってきます。チャンネルを閉じる具体的な手順は、ここでチャンネルを消すためのパスワードを入手しそのパスワードを使って {:type close :name username :params key} という json を 該当の WebSocket に流すと、サーバがキーをチェックしてチャンネルを閉じます。チャンネルが閉じられたことは {:closed true} という json が Websocket から流れてくるのを確認して下さい"
                                    :post {:coercion rcs/coercion
                                           :parameters {:path {:channel string?}}
                                           :handler (fn [req]
@@ -137,7 +150,7 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                           :middleware [ring.middleware.cookies/wrap-cookies]}}]
       ["/:channel/invite" {:summary "他のユーザを招待します"
                                    :description
-                                   "他のユーザを招待します。ここで招待するためのワンタイムパスワードを入手して下さい。それから Websocket に、{:type invite :params {:key key :name name}} という json を送って下さい。サーバでパスワードをチェックして、認証されれば、 name に招待状が届きます。これに name が賛成することでウィンドウがもう一枚生成され、複数画面でのチャットを可能にします"
+                                   "他のユーザを招待します。ここで招待するためのワンタイムパスワードを入手して下さい。それから Websocket に、{:type invite :name username :params {:key key :name name}} という json を送って下さい。サーバでパスワードをチェックして、認証されれば、 name に招待状が届きます。これに name が賛成することでウィンドウがもう一枚生成され、複数画面でのチャットを可能にします"
                                    :post {:coercion rcs/coercion
                                           :parameters {:path {:channel string?}}
                                           :handler (fn [req]

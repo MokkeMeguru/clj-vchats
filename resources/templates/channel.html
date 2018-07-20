@@ -11,6 +11,27 @@
         {% style "/assets/bootstrap/css/bootstrap.min.css" %}
         <link rel="stylesheet" href="/css/channel-style.css" type="text/css">
         <script type="text/javascript">
+         // NOTICE
+
+         // * how to invite another one?
+         // webSocket.send(JSON.stringify({type : "invite",
+         //                                name : <user-name>,
+         //                                params : {key : <key>
+         //                                          name : <another-name>}}));
+         //    ** what is <key>?
+         //         Please go to /swagger-ui
+         //            and input https://elect-remote.softether.net/vchats-api/swagger.json into the top of form,
+         //            and see default->/vchats-api/{channel}/invite
+         //    ** if invitation is valid,
+         //          we can get the json {type : invite, params : <another-name>}
+         //
+
+         // * how to accept invitation?
+         // webSocket.send(JSON.stringify({type : "accept",
+         //                                name : <user-name>}}));
+         //    ** if accepting is valid,
+         //          we can get the json {type : accept, params : <user-name>}
+
          // note -----------------------------------
          // - how to send face information
          // webSocket.send(JSON.stringify({type : "face", name : "owner",
@@ -26,6 +47,8 @@
          //                                params : "hogehoge"}));
          // ----------------------------------------
 
+         
+         // -------------------------------------------------------------------
          // test
          var channel_name = (window.location.pathname).split("/")[2];
          // 接続先URI
@@ -60,7 +83,7 @@
 
          // 接続イベント
          function onOpen(event) {
-             chat("接続しました。");
+             chat("<info> 接続しました");
              if (Cookies.get('identity')) {
                  webSocket.send(JSON.stringify({type : "greeting",
                                                 name : Cookies.get('identity'),
@@ -96,12 +119,12 @@
 
          // エラーイベント
          function onError(event) {
-             chat("エラーが発生しました。");
+             chat("<info> エラーが発生しました。");
          }
 
          // 切断イベント
          function onClose(event) {
-             chat("切断しました。3秒後に再接続します。(" + event.code + ")");
+             chat("<info> 切断しました。3秒後に再接続します。(" + event.code + ")");
              webSocket = null;
              setTimeout("open()", 3000);
          }
@@ -140,9 +163,9 @@
              console.log("message" + message);
              var p = message.substring(0,1);
              if (p == "{") {
-                 var msgtag = $("<div>").text(JSON.parse(message).params);
+                 var msgtag = $("<div style=\"text-align:left;\">").text(JSON.parse(message).params);
              } else {
-                 var msgtag = $("<div>").text(message);
+                 var msgtag = $("<div style=\"text-align:left;background-color:#ffdfdf\">").text(message);
              }
              $("[data-name='chat']").prepend(msgtag);
          }
@@ -156,100 +179,139 @@
          var btn =  document.querySelector('input[name=close-button]');
          var pass;
          var closeevent = function() {
-                     console.log("clicked");
-                     $.ajax({
-                         url: close_name,
-                         type: 'POST',
-                     }).done(function(data) {
-                         alert("SUCCESS\n next: send messaage to websocket");
-                         pass = data;
-                         console.log (pass);
-                         webSocket.send(JSON.stringify({type : "close",
-                                                        name : Cookies.get('identity'),
-                                                        params : pass}));
-                         window.location.href = window.location.replace("channels");
-                     }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
-                         alert("ERROR");
-                         console.log(XMLHttpRequest);
-                         console.log(testStatus);
-                         console.log(errorThrown);
-                     })
-                 }
+             console.log("clicked");
+             $.ajax({
+                 url: close_name,
+                 type: 'POST',
+             }).done(function(data) {
+                 alert("SUCCESS\n next: send messaage to websocket");
+                 pass = data;
+                 console.log (pass);
+                 webSocket.send(JSON.stringify({type : "close",
+                                                name : Cookies.get('identity'),
+                                                params : pass}));
+                 window.location.href = window.location.replace("channels");
+             }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
+                 alert("ERROR");
+                 console.log(XMLHttpRequest);
+                 console.log(testStatus);
+                 console.log(errorThrown);
+             })
+         }
 
         </script>
     </head>
-    <body>
-        <h1>Enjoy your V-tuber life!</h1>
-        <hr>
 
-        <div class="container text-center" style="margin:37px">
-            <div class="row" style="flex-wrap: nowrap;">
-                <div class="col-xs-2">
-                    <div><h1>投稿記録</h1></div>
-                    <div class="text-center">
-                        <input type="text" data-name="message" size="100">
+    <body>
+        <div class="container mt-2">
+            <div clas="row">
+            <h1 id="title">Welcome to the channel</h1>
+            </div>
+        </div>
+        <script>
+         document.getElementById("title").innerHTML=window.location.pathname.split("/")[2];
+        </script>
+        <hr class="mt-0">
+
+        <div style="margin:10px;width:900px">
+            <div class="row">
+                <div class="container" style="width:540px;margin:10px">
+                    <div>
+                        <canvas id="mydisplay-container" class="display-container" width="500px" height="400px" style="background-color:#636367;"></canvas>
                     </div>
-                    <div class="log" data-name="chat" style="width:20em;height:20em;background-color:white;color:black"></div>
+                    <div id="oc">
+                        <canvas id="opdisplay-container" class="display-container" width="500px" height=400px"  style="background-color:#636367;"></canvas>
+                    </div>
                 </div>
                 
-                <div class="col-xs-4">
-                    <canvas id="mydisplay-container" class="display-container" width="500px" height="400px"></canvas>
-                </div>
-                <div class="col-xs-4">y
-                    <canvas id="opdisplay-container" class="display-container" width="500px" height=400px"></canvas>
+                <div class="container m-1 text-center" style="width:350px">
+                    <div><h1>コメント</h1></div>
+                    <div class="text-center">
+                        <input type="text" data-name="message" size="100" style="width:320px">
+                    </div>
+                    <div class="log" data-name="chat" style="width:320px;height:720px;background-color:white;color:black"></div>
                 </div>
             </div>
         </div>
         <hr>
-        <div class="container">
+        <div id="cc" class="container">
             <div class="raw text-center">
                 <p>
                     <input class="close-btn" onclick="closeevent()" type="button" value="ライブを終了"></p>
             </div>
         </div>
 
+
         <!-- scripts and styles -->
-        
+        <script>
+         // new -------------------------------------------------------------------
+         // get channel user
+         const talkers = new XMLHttpRequest();
+         talkers.responseType = "json";
+         var master;
+         var slave;
+         talkers.open("GET",window.location.protocol +"//" + window.location.host + "/vchats-api/" + window.location.pathname.split("/")[2] + "/get-talker");
+         talkers.addEventListener("load",(event) => {
+
+             console.log(event);
+             if (200 ==  event.target.status) {
+                 master = event.target.response["master"];
+                 slave = event.target.response["inviter"];
+                 if (Cookies.get('identity') != master) {
+                     var eleme = document.getElementById("cc");
+                     eleme.style.display = "none";
+                 }
+                 if (!slave) {
+                     // goto below
+                     var elem = document.getElementById("oc");
+                     elem.style.display = "none";
+                 }
+             }
+         });
+         talkers.send();
+        </script>
         {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
-            
 
             {% script "/assets/jquery/jquery.min.js" %}
             {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
-            
             {% script "/assets/bootstrap/js/bootstrap.min.js" %}
-            <script type="text/javascript">
-             // ---------------------------------------------------
-             // get-messages
-             const request = new XMLHttpRequest();
-             request.open("GET", "/vchats-api/"+ (window.location.pathname).split("/")[2] +"/get-messages");
-             request.addEventListener("load", (event) => {
-                 console.log(event.target.status); // => 200
-                 console.log(event.target.responseText); // => "{...}"
-             });
-             request.send();
-             // ---------------------------------------------------
+        <script type="text/javascript">
+         // ---------------------------------------------------
+         // get-messages
+         const request = new XMLHttpRequest();
+         request.responseType="json";
+         request.open("GET", "/vchats-api/"+ (window.location.pathname).split("/")[2] +"/get-messages");
+         request.addEventListener("load", (event) => {
+             console.log(event.target.status); // => 200
+             console.log(event.target.response); // => "{...}"
+             console.log(event.target.response["messages"].length); // => "{...}"
+             event.target.response["messages"].slice().reverse().forEach(function(x) {
+                 $("[data-name='chat']").prepend($("<div style=\"text-align:left;\">").text( "[" + x["name"]+"] " + x["params"]));
+                 // console.log(x["params"] + "[" + x["name"]+"]");
+             })
+         });
+         request.send();
+         // ---------------------------------------------------
 
-             // set canvas ----------------------------------------
-             var width = 300;
-             var height = 200;
+         // set canvas ----------------------------------------
+         var width = 300;
+         var height = 200;
 
-             var stage = new PIXI.Stage(0x000000);
+         var stage = new PIXI.Stage(0x000000);
 
-             var renderer = PIXI.autoDetectRenderer(width, height);
+         var renderer = PIXI.autoDetectRenderer(width, height);
 
-             document.getElementById("mydisplay-container").appendChild(renderer.view);
+         document.getElementById("mydisplay-container").appendChild(renderer.view);
 
-             function animate(){
-                 requestAnimationFrame(animate);
-             }
+         function animate(){
+             requestAnimationFrame(animate);
+         }
 
-             animate();
-             // --------------------------------------------------------------
-            </script>
+         animate();
+         // --------------------------------------------------------------
+        </script>
             <script type="text/javascript">
              var csrfToken = "{{csrf-token}}";
             </script>
     </body>
-    
-    
 </html>

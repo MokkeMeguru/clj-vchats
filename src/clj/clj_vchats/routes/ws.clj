@@ -4,6 +4,7 @@
             [clojure.data.json :as json]
             [clj-vchats.db.core :as db]
             [clj-vchats.routes.services.closing :as closing]
+            [clj-vchats.routes.services.invite :as invite]
             [clj-vchats.routes.services.audio :refer [get-audio-b64]]))
 
 (def channels (atom {}))
@@ -46,7 +47,20 @@
               (print channel msg "\n")
               (send! channel msg))))
         "invite"
-        nil
+        (let [uname (:name mmsg)
+              params (:params mmsg)
+              key (:key params)
+              iname (:name params)]
+          (when (invite/check-invite-key channel-name key)
+            (when (invite/invite-channel channel-name iname)
+              (doseq [channel in-channels]
+                (send! channel (json/write-str {:type "invite"
+                                                :params iname}))))))
+        "accept"
+        (let [uname (:name mmsg)]
+          (when (invite/accept-invite channel-name uname)
+            (doseq [channel in-channels]
+              (send! channel mmsg))))
         "talk"
         (let [uname (:name mmsg)
               params (:params mmsg)

@@ -30,9 +30,8 @@
         <script>
          var logoutButton = document.getElementById('logout');
          logoutButton.addEventListener('click', function () {
-             console.log('???');
              var xhr = new XMLHttpRequest();
-             xhr.open('GET', 'http://' + window.location.host + '/logout', true);
+             xhr.open('GET', 'https://' + window.location.host + '/logout', true);
              xhr.onload = function () {
                  console.log(xhr.responseURL);
                  window.location.href = xhr.responseURL;
