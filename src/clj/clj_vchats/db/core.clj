@@ -136,3 +136,5 @@
 ;; (:master_name (get-channel {:chan_name "111111"}))
 ;; (:inviter_name (get-channel {:chan_name "111111"}))
 
+;; (get-user {:name "testuser"}) ;;=> testpassword
+

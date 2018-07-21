@@ -75,6 +75,7 @@
               (doseq [channel in-channels]
                 (send! channel (json/write-str
                                 {:type "voice-data"
+                                 :name uname
                                  :params b64-voice}))))))
         (doseq [channel in-channels] (send! channel msg)))
       (doseq [channel in-channels]

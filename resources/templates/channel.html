@@ -10,202 +10,13 @@
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
         {% style "/assets/bootstrap/css/bootstrap.min.css" %}
         <link rel="stylesheet" href="/css/channel-style.css" type="text/css">
-        <script type="text/javascript">
-         // NOTICE
-
-         // * how to invite another one?
-         // webSocket.send(JSON.stringify({type : "invite",
-         //                                name : <user-name>,
-         //                                params : {key : <key>
-         //                                          name : <another-name>}}));
-         //    ** what is <key>?
-         //         Please go to /swagger-ui
-         //            and input https://elect-remote.softether.net/vchats-api/swagger.json into the top of form,
-         //            and see default->/vchats-api/{channel}/invite
-         //    ** if invitation is valid,
-         //          we can get the json {type : invite, params : <another-name>}
-         //
-
-         // * how to accept invitation?
-         // webSocket.send(JSON.stringify({type : "accept",
-         //                                name : <user-name>}}));
-         //    ** if accepting is valid,
-         //          we can get the json {type : accept, params : <user-name>}
-
-         // note -----------------------------------
-         // - how to send face information
-         // webSocket.send(JSON.stringify({type : "face", name : "owner",
-         //                                params : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}));
-         // - how to send message
-         // webSocket.send(JSON.stringify({type : "message",
-         //                                name : "elect",
-         //                                params : message}));
-         //                  *  name : get from cookie
-         // - how to send greeting (inform them login into the channel)
-         // webSocket.send(JSON.stringify({type : "greeting",
-         //                                name : "elect",
-         //                                params : "hogehoge"}));
-         // ----------------------------------------
-
-         
-         // -------------------------------------------------------------------
-         // test
-         var channel_name = (window.location.pathname).split("/")[2];
-         // 接続先URI
-         var uri = "wss://" + location.host + "/test/websocket/" + channel_name;
-         console.log(uri);
-         // WebSocketオブジェクト
-         var webSocket = null;
-
-         // 初期処理
-         function init() {
-             // ボタン押下イベント設定
-             $("[data-name='message']").keypress(press);
-             // 接続
-             open();
-         }
-
-         // 接続
-         function open() {
-             if (webSocket == null) {
-                 console.log("init websocket");
-                 // WebSocket の初期化
-                 webSocket = new WebSocket(uri);
-                 console.log("initialized!");
-                 console.log(webSocket);
-                 // イベントハンドラの設定
-                 webSocket.onopen = onOpen;
-                 webSocket.onmessage = onMessage;
-                 webSocket.onclose = onClose;
-                 webSocket.onerror = onError;
-             }
-         }
-
-         // 接続イベント
-         function onOpen(event) {
-             chat("<info> 接続しました");
-             if (Cookies.get('identity')) {
-                 webSocket.send(JSON.stringify({type : "greeting",
-                                                name : Cookies.get('identity'),
-                                                params : "チャンネルは" + channel_name}));
-             }
-         }
-
-         // メッセージ受信イベント
-         function onMessage(event) {
-             if (event && event.data) {
-                 //------------------------------------------------------------
-                 var obj = JSON.parse(event.data);
-                 console.log(obj.type);
-                 if (obj.type == "voice-data") {
-                     var voice = obj.params;
-                     var audio = new Audio("data:audio/wav;base64," + voice);
-                     audio.play();
-                 }
-                 else if(obj.type == "message"){
-                     chat(event.data);
-                 }
-                 else if(obj.type == "close") {
-                     chat(event.data);
-                     window.location.replace("channels");
-                 }
-                 else if(obj.type == "invite") {
-                     chat(event.data);
-                 }
-                 //-------------------------------------------------------------
-                 // chat(event.data);
-             }
-         }
-
-         // エラーイベント
-         function onError(event) {
-             chat("<info> エラーが発生しました。");
-         }
-
-         // 切断イベント
-         function onClose(event) {
-             chat("<info> 切断しました。3秒後に再接続します。(" + event.code + ")");
-             webSocket = null;
-             setTimeout("open()", 3000);
-         }
-
-         // キー押下時
-         function press(event) {
-             // キーがEnterか判定
-             if (event && event.which == 13) {
-                 // メッセージ取得
-                 var message = $("[data-name='message']").val();
-                 // 存在チェック
-                 if (message && webSocket) {
-                     // メッセージ送信
-                     webSocket.send(
-                         JSON.stringify({type : "message",
-                                         name : Cookies.get('identity'),
-                                         params : message}));
-                     webSocket.send(
-                         JSON.stringify({type : "talk",
-                                         name : Cookies.get('identity'),
-                                         params :{text : message}}));
-                     // メッセージ初期化
-                     $("[data-name='message']").val("");
-                 }
-             }
-         }
-
-         // チャットに表示
-         function chat(message) {
-             // 100件まで残す
-             var chats = $("[data-name='chat']").find("div");
-             while (chats.length >= 100) {
-                 chats = chats.last().remove();
-             }
-             // メッセージ表示
-             console.log("message" + message);
-             var p = message.substring(0,1);
-             if (p == "{") {
-                 var msgtag = $("<div style=\"text-align:left;\">").text(JSON.parse(message).params);
-             } else {
-                 var msgtag = $("<div style=\"text-align:left;background-color:#ffdfdf\">").text(message);
-             }
-             $("[data-name='chat']").prepend(msgtag);
-         }
-
-         // 初期処理登録
-         $(init);
-
-         // close channel
-         var close_name = "https://" + window.location.host + "/vchats-api/" + window.location.pathname.split("/")[2] +  "/close-channel";
-         console.log(close_name);
-         var btn =  document.querySelector('input[name=close-button]');
-         var pass;
-         var closeevent = function() {
-             console.log("clicked");
-             $.ajax({
-                 url: close_name,
-                 type: 'POST',
-             }).done(function(data) {
-                 alert("SUCCESS\n next: send messaage to websocket");
-                 pass = data;
-                 console.log (pass);
-                 webSocket.send(JSON.stringify({type : "close",
-                                                name : Cookies.get('identity'),
-                                                params : pass}));
-                 window.location.href = window.location.replace("channels");
-             }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
-                 alert("ERROR");
-                 console.log(XMLHttpRequest);
-                 console.log(testStatus);
-                 console.log(errorThrown);
-             })
-         }
-
-        </script>
+        
     </head>
 
     <body>
         <div class="container mt-2">
             <div clas="row">
-            <h1 id="title">Welcome to the channel</h1>
+                <h1 id="title">Welcome to the channel</h1>
             </div>
         </div>
         <script>
@@ -253,7 +64,7 @@
          talkers.open("GET",window.location.protocol +"//" + window.location.host + "/vchats-api/" + window.location.pathname.split("/")[2] + "/get-talker");
          talkers.addEventListener("load",(event) => {
 
-             console.log(event);
+             // console.log(event);
              if (200 ==  event.target.status) {
                  master = event.target.response["master"];
                  slave = event.target.response["inviter"];
@@ -272,9 +83,9 @@
         </script>
         {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
 
-            {% script "/assets/jquery/jquery.min.js" %}
-            {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
-            {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+        {% script "/assets/jquery/jquery.min.js" %}
+        {% script "/assets/font-awesome/svg-with-js/js/fontawesome.min.js" %}
+        {% script "/assets/bootstrap/js/bootstrap.min.js" %}
         <script type="text/javascript">
          // ---------------------------------------------------
          // get-messages
@@ -282,9 +93,9 @@
          request.responseType="json";
          request.open("GET", "/vchats-api/"+ (window.location.pathname).split("/")[2] +"/get-messages");
          request.addEventListener("load", (event) => {
-             console.log(event.target.status); // => 200
-             console.log(event.target.response); // => "{...}"
-             console.log(event.target.response["messages"].length); // => "{...}"
+             // console.log(event.target.status); // => 200
+             // console.log(event.target.response); // => "{...}"
+             // console.log(event.target.response["messages"].length); // => "{...}"
              event.target.response["messages"].slice().reverse().forEach(function(x) {
                  $("[data-name='chat']").prepend($("<div style=\"text-align:left;\">").text( "[" + x["name"]+"] " + x["params"]));
                  // console.log(x["params"] + "[" + x["name"]+"]");
@@ -310,8 +121,386 @@
          animate();
          // --------------------------------------------------------------
         </script>
-            <script type="text/javascript">
+
+        <script type="module" src="/static/VTuberFrame.js"></script>
+        <script src="/static/facetrack/model_pca_20_svm.js"></script>
+        <script src="/static/facetrack/clmtrackr.min.js"></script>
+        <script src="/static/facetrack/pixi.min.js"></script>
+        <script type="module" src="/static/SpeakerTag.js"></script>
+        <script type="text/javascript">
+         // * how to invite another one?
+         // webSocket.send(JSON.stringify({type : "invite",
+         //                                name : <user-name>,
+         //                                params : {key : <key>
+         //                                          name : <another-name>}}));
+         //    ** what is <key>?
+         //         Please go to /swagger-ui
+         //            and input https://elect-remote.softether.net/vchats-api/swagger.json into the top of form,
+         //            and see default->/vchats-api/{channel}/invite
+         //    ** if invitation is valid,
+         //          we can get the json {type : invite, params : <another-name>}
+         //
+
+         // * how to accept invitation?
+         // webSocket.send(JSON.stringify({type : "accept",
+         //                                name : <user-name>}}));
+         //    ** if accepting is valid,
+         //          we can get the json {type : accept, params : <user-name>}
+
+         // note -----------------------------------
+         // - how to send face information
+         // webSocket.send(JSON.stringify({type : "face", name : "owner",
+         //                                params : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}));
+         // - how to send message
+         // webSocket.send(JSON.stringify({type : "message",
+         //                                name : "elect",
+         //                                params : message}));
+         //                  *  name : get from cookie
+         // - how to send greeting (inform them login into the channel)
+         // webSocket.send(JSON.stringify({type : "greeting",
+         //                                name : "elect",
+         //                                params : "hogehoge"}));
+         // ----------------------------------------
+
+         
+         // -------------------------------------------------------------------
+        </script>
+
+
+        <div>
+            <speaker-tag id="speakertag"></speaker-tag>
+        </div>
+
+        <video id="video"></video> <!-- 撮影をするために必要 -->
+        <vtuber-frame id="vtubertag1"></vtuber-frame>
+        <vtuber-frame id="vtubertag2"></vtuber-frame>
+
+        <script type="module">
+         import VTuberFrame from '/static/VTuberFrame.js'
+
+         var vtag1;
+         var vtag2;
+         var channel_name = (window.location.pathname).split("/")[2];
+         var uri = "wss://" + location.host + "/test/websocket/" + channel_name;
+         // console.log(uri);
+
+         var webSocket = null;
+         function init() {
+             $("[data-name='message']").keypress(press);
+             open();
+         }
+
+         function open() {
+             if (webSocket == null) {
+                 // console.log("init websocket");
+                 webSocket = new WebSocket(uri);
+                 // console.log("initialized!");
+                 // console.log(webSocket);
+                 webSocket.onopen = onOpen;
+                 webSocket.onmessage = onMessage;
+                 webSocket.onclose = onClose;
+                 webSocket.onerror = onError;
+             }
+         }
+
+         function onOpen(event) {
+             chat("<info> 接続しました");
+             if (Cookies.get('identity')) {
+                 webSocket.send(JSON.stringify({type : "greeting",
+                                                name : Cookies.get('identity'),
+                                                params : "チャンネルは" + channel_name}));
+             }
+         }
+
+         function onError(event) {
+             chat("<info> エラーが発生しました。");
+         }
+
+         function onClose(event) {
+             chat("<info> 切断されました。3秒後に再接続します。(" + event.code + ")");
+             webSocket = null;
+             setTimeout("open()", 3000);
+         }
+
+         function press(event) {
+             if (event && event.which == 13) {
+                 var message = $("[data-name='message']").val();
+                 if (message && webSocket) {
+                     webSocket.send(
+                         JSON.stringify({type : "message",
+                                         name : Cookies.get('identity'),
+                                         params : message}));
+                     $("[data-name='message']").val("");
+                 }
+             }
+         }
+
+         function chat(message) {
+             var chats = $("[data-name='chat']").find("div");
+             while (chats.length >= 100) {
+                 chats = chats.last().remove();
+             }
+             // console.log("message" + message);
+             var p = message.substring(0,1);
+             if (p == "{") {
+                 var msgtag = $("<div style=\"text-align:left;\">").text(
+                     "[" + JSON.parse(message).name + "] " + 
+                     JSON.parse(message).params);
+             } else {
+                 var msgtag = $("<div style=\"text-align:left;background-color:#ffdfdf\">").text(message);
+             }
+             $("[data-name='chat']").prepend(msgtag);
+         }
+
+         $(init);
+
+         var close_name = "https://" + window.location.host + "/vchats-api/" + window.location.pathname.split("/")[2] +  "/close-channel";
+         // console.log(close_name);
+         var btn =  document.querySelector('input[name=close-button]');
+         var pass;
+         var closeevent = function() {
+             // console.log("clicked");
+             $.ajax({
+                 url: close_name,
+                 type: 'POST',
+             }).done(function(data) {
+                 alert("SUCCESS\n next: send messaage to websocket");
+                 pass = data;
+                 // console.log (pass);
+                 webSocket.send(JSON.stringify({type : "close",
+                                                name : Cookies.get('identity'),
+                                                params : pass}));
+                 window.location.href = window.location.replace("channels");
+             }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
+                 alert("ERROR");
+                 // console.log(XMLHttpRequest);
+                 // console.log(testStatus);
+                 // console.log(errorThrown);
+             })
+         }
+
+         let stag = document.getElementById("speakertag");
+
+
+         if ((master == Cookies.get('identity')) || (slave == Cookies.get('identity'))) {
+             stag.recognizer_active = true;
+             stag.comp_active = true;
+             stag.callback = (text, v, p, r) => {
+                 if (webSocket.readyState == 1) {
+                     webSocket.send(
+                         JSON.stringify({type : "talk",
+                                         name : Cookies.get('identity'),
+                                         params :{text : text,
+                                                  voice : v,
+                                                  pitch : p,
+                                                  rate : r}}));
+                     webSocket.send(
+                         JSON.stringify({type : "message",
+                                         name : Cookies.get('identity'),
+                                         params : text}));
+                 }
+             }
+
+             // import VTuberFrame from '/static/VTuberFrame.js'
+
+             // if master == Cookies.get('identity') || slave == Cookies.get('identity')
+
+             /// 自分の顔を写すウィンドウとしてvtag1を使う
+             vtag1 = document.getElementById('vtubertag1');
+             vtag1.self_active = true;
+             // vtag1.comp_active = true;
+
+             /// もしコールバック関数を設定したいなら
+             /// 変数xは顔の情報を持つ71点の配列
+             /// ウェブソケットで点の情報を送るときもこれをつかう
+             let callback = (points) => {
+                 if (webSocket.readyState == 1) {
+                     // console.log(points);
+                     // WEBSOCKET_SEND_MESSAGE1(points)
+                     if (master == Cookies.get('identity')) {
+                         webSocket.send(
+                             JSON.stringify({type : "master-points",
+                                             name : Cookies.get('identity'),
+                                             params : points}));
+                     }
+                     else if (slave == Cookies.get('identity')) {
+                         webSocket.send(
+                             JSON.stringify({type : "slave-points",
+                                             name : Cookies.get('identity'),
+                                             params : points}));
+                     }
+                 }
+             }
+             vtag1.callback = callback;
+
+             ///　背景や顔のスキンを変更した時に使うコールバック
+             /// 画面横のオプションで更新するたびに呼び出される。
+             vtag1.option_callback = (key, value) => {
+                 // console.log(key, value);
+                 if (master == Cookies.get('identity')) {
+                     webSocket.send(
+                         JSON.stringify({type : "master-skin",
+                                         name : Cookies.get('identity'),
+                                         params : {key : key,
+                                                   value : value}}));
+                 }
+                 else if (slave == Cookies.get('identity')) {
+                     webSocket.send(
+                         JSON.stringify({type : "slave-skin",
+                                         name : Cookies.get('identity'),
+                                         params : {key : key,
+                                                   value : value}}));
+                 }
+                 // WEBSOCKET_SEND_MESSAGE2(key, value);
+
+             }
+             /// 相手側の顔を写すウィンドウとしてvtag2を使う
+             vtag2 = document.getElementById('vtubertag2');
+             vtag2.comp_active = true;
+         }
+         else {
+             stag.recognizer_active = false;
+             stag.comp_active = false;
+             vtag1 = document.getElementById('vtubertag1');
+             vtag1.comp_active = true;
+
+             vtag2 = document.getElementById('vtubertag2');
+             vtag2.comp_active = true;
+
+         }
+         /// ウェブソケットで話し相手の点情報を受け取り、相手側のウィンドウで表示したいとき
+         /// vtag2.set_points(points)を使う
+         /*
+            WEBSOCKET_GET_MESSAGE(points) {
+            vtag2.set_points(points);
+            }
+          */
+         
+         /// 相手の背景や顔のスキンが変更した時に使うコールバック
+         /*
+            WEBSOCKET_GET_MESSAGE1(key, value) {
+            vtag2.set_texture(key, value);
+            }
+          */
+         
+         /// 音声のデータが与えられた時、口パクする
+         /// audioタグのduration属性で再生時間を得て、lipsynch_startで口パク開始
+         /* WEBSOCKET_GET_MESSAGE2(src) {
+          *     audio.SET_SOURCE(src)
+          *     if (speak) {
+          *         vtag1.lipsynch_start(audio.duration*1000);
+          *     } else {
+          *         vtag2.lipsynch_start(audio.duration*1000);
+          *     }
+          *     audio.play();
+          * }*/
+         function onMessage(event) {
+             if (event && event.data) {
+                 var obj = JSON.parse(event.data);
+                 // console.log(obj.type);
+                 if (obj.type == "voice-data") {
+                     var voice = obj.params;
+                     var audio = new Audio("data:audio/wav;base64," + voice);
+                     // console.log(obj.name);
+                     audio.addEventListener('loadedmetadata', function() {
+                         console.log(obj.name);
+                         if ((Cookies.get("identity") != master)
+                             && (Cookies.get("identity") != slave)) {
+                             if (master == obj.name) {
+                                 vtag1.lipsynch_start(audio.duration*1000);
+                             }
+                             else {
+                                 vtag2.lipsynch_start(audio.duration*1000);
+                             }
+                         }
+                         else if ((Cookies.get("identity") == slave)
+                                  && slave == obj.name) {
+                             vtag1.lipsynch_start(audio.duration*1000);
+                         }
+                         else {
+                             vtag2.lipsynch_start(audio.duration*1000);
+                         }
+                         audio.play();
+                     })
+                 }
+                 else if(obj.type == "message"){
+                     chat(event.data);
+                 }
+                 else if(obj.type == "close") {
+                     chat(event.data);
+                     window.location.replace("channels");
+                 }
+                 else if(obj.type == "master-points") {
+                     if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
+                         vtag1.set_points(obj.params);
+                     } else if (Cookies.get("identity") == master) {
+                     }
+                     else if (((Cookies.get("identity") == master)
+                            && (master == obj.name))
+                              || ((Cookies.get("identity") == slave)
+                               && (slave == obj.name))) {
+                         vtag1.set_points(obj.params);
+                     }
+                     else {
+                         vtag2.set_points(obj.params);
+                     }
+                 }
+                 // ERROR: slave point with slave => show vtag2
+                 else if(obj.type == "slave-points") {
+                     if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
+                         vtag2.set_points(obj.params);
+                     }
+                     else if (Cookies.get("identity") == slave) {
+                     }
+                     else if (((Cookies.get("identity") == slave)
+                            && (master == obj.name))
+                              || ((Cookies.get("identity") == master)
+                               && (slave == obj.name))) {
+                         vtag1.set_points(obj.params);
+                     }
+                     else {
+                         vtag2.set_points(obj.params);
+                     }
+                 }
+                 else if(obj.type == "master-skin") {
+                     if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
+                         vtag1.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else if (((Cookies.get("identity") == master)
+                            && (master == obj.name))
+                              || ((Cookies.get("identity") == slave)
+                               && (slave == obj.name))) {
+                         vtag1.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                 } else if (obj.type == "slave-skin") {
+                     if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                     if (((Cookies.get("identity") == slave)
+                       && (master == obj.name))
+                         || ((Cookies.get("identity") == master)
+                          && (slave == obj.name))) {
+                         vtag1.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                 }
+                 else if(obj.type == "invite") {
+                     chat(event.data);
+                 }
+                 else if(obj.type == "accept") {
+                     console.log(obj.params);
+                 }
+             }
+         }
+        </script>
+
+        <script type="text/javascript">
              var csrfToken = "{{csrf-token}}";
-            </script>
+        </script>
     </body>
 </html>
