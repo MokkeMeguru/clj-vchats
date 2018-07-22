@@ -146,4 +146,6 @@
 ;; => {:master_face 0, :master_bg 0, :inviter_face 0, :inviter_bg 0}
 
 ;; (get-inviter {:chan_name "test"})
+;; (get-channel {:chan_name "test"})
+
 

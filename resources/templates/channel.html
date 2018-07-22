@@ -47,7 +47,7 @@
         <div id="cc" class="container">
             <div class="raw text-center">
                 <p>
-                    <input class="close-btn" onclick="closeevent()" type="button" value="ライブを終了"></p>
+                    <input id="close-btn" class="close-btn" type="button" value="ライブを終了"></p>
             </div>
         </div>
 
@@ -248,26 +248,27 @@
          // console.log(close_name);
          var btn =  document.querySelector('input[name=close-button]');
          var pass;
-         var closeevent = function() {
-             // console.log("clicked");
-             $.ajax({
-                 url: close_name,
-                 type: 'POST',
-             }).done(function(data) {
-                 alert("SUCCESS\n next: send messaage to websocket");
-                 pass = data;
-                 // console.log (pass);
-                 webSocket.send(JSON.stringify({type : "close",
-                                                name : Cookies.get('identity'),
-                                                params : pass}));
-                 window.location.href = window.location.replace("channels");
-             }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
-                 alert("ERROR");
-                 // console.log(XMLHttpRequest);
-                 // console.log(testStatus);
-                 // console.log(errorThrown);
-             })
-         }
+         document.getElementById('close-btn').addEventListener('click',
+                                                               function() {
+                                                                   // console.log("clicked");
+                                                                   $.ajax({
+                                                                       url: close_name,
+                                                                       type: 'POST',
+                                                                   }).done(function(data) {
+                                                                       alert("SUCCESS\n next: send messaage to websocket");
+                                                                       pass = data;
+                                                                       // console.log (pass);
+                                                                       webSocket.send(JSON.stringify({type : "close",
+                                                                                                      name : Cookies.get('identity'),
+                                                                                                      params : pass}));
+                                                                       window.location.href = window.location.replace("channels");
+                                                                   }).fail(function(XMLHttpRequest, testStatus,  errorThrown) {
+                                                                       alert("ERROR");
+                                                                       // console.log(XMLHttpRequest);
+                                                                       // console.log(testStatus);
+                                                                       // console.log(errorThrown);
+                                                                   })
+                                                               });
 
          var invitebtn = document.getElementById('invite-btn');
          let inviters;
@@ -360,7 +361,9 @@
              /// 画面横のオプションで更新するたびに呼び出される。
              vtag1.option_callback = (key, value) => {
                  // console.log(key, value);
+                 console.log(Cookies.get('identity'));
                  if (master == Cookies.get('identity')) {
+                     console.log(master);
                      webSocket.send(
                          JSON.stringify({type : "master-skin",
                                          name : Cookies.get('identity'),
@@ -368,6 +371,7 @@
                                                    value : value}}));
                  }
                  else if (slave == Cookies.get('identity')) {
+                     console.log(slave);
                      webSocket.send(
                          JSON.stringify({type : "slave-skin",
                                          name : Cookies.get('identity'),
@@ -491,7 +495,6 @@
                          vtag2.set_points(obj.params);
                      }
                  }
-                 // ERROR: slave point with slave => show vtag2
                  else if(obj.type == "slave-points") {
                      if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
                          vtag2.set_points(obj.params);
@@ -521,7 +524,7 @@
                          vtag2.set_texture(obj.params.key, obj.params.value);
                      }
                      else {
-                         vtag1.set_texture(obj.params.key, obj.params.value);
+                         vtag2.set_texture(obj.params.key, obj.params.value);
                      }
                  } else if (obj.type == "slave-skin") {
                      if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
