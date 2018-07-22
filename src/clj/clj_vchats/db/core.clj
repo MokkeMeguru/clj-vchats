@@ -138,3 +138,12 @@
 
 ;; (get-user {:name "testuser"}) ;;=> testpassword
 
+;; (get-channel {:chan_name "testchannel"})
+
+;; (get-channel {:chan_name "test"})
+;; (delete-inviter! {:chan_name "test"})
+;; (get-skin {:chan_name "test"})
+;; => {:master_face 0, :master_bg 0, :inviter_face 0, :inviter_bg 0}
+
+;; (get-inviter {:chan_name "test"})
+

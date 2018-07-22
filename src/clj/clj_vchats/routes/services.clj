@@ -11,7 +11,9 @@
             [clj-vchats.routes.ws :as ws] ;; added!
             [clj-vchats.routes.services.auth :as auth]
             [clj-vchats.db.core :as db]
-            [clj-vchats.routes.services.closing :refer [create-close-key]]))
+            [clj-vchats.routes.services.skin :refer [get-skins]]
+            [clj-vchats.routes.services.closing :refer [create-close-key]]
+            [clj-vchats.routes.services.invite :refer [create-invite-key]]))
 
 (defn service-routes []
   (ring/router
@@ -122,6 +124,14 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                                   {:state 200
                                                    :body {:master master-name
                                                           :inviter inviter-name}}))}}]
+      ["/:channel/get-skins" {:summary "スキンを取得します。"
+                              :description "スキンの JSON データを取得します。チャンネルの入室時に取得して下さい。"
+                              :get {:coercion rcs/coercion
+                                    :parameters {:path {:channel string?}}
+                                    :handler (fn [req]
+                                               (let [parameters (:parameters req)
+                                                     chan (-> parameters :path :channel)]
+                                                 (get-skins chan)))}}]
       ["/:channel/close-channel" {:summary "チャンネルを閉じます。"
                                    :description
                                    "チャンネルを消すためのワンタイムパスワードを発行します。
@@ -151,7 +161,7 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
       ["/:channel/invite" {:summary "他のユーザを招待します"
                                    :description
                                    "他のユーザを招待します。ここで招待するためのワンタイムパスワードを入手して下さい。それから Websocket に、{:type invite :name username :params {:key key :name name}} という json を送って下さい。サーバでパスワードをチェックして、認証されれば、 name に招待状が届きます。これに name が賛成することでウィンドウがもう一枚生成され、複数画面でのチャットを可能にします"
-                                   :post {:coercion rcs/coercion
+                                   :get {:coercion rcs/coercion
                                           :parameters {:path {:channel string?}}
                                           :handler (fn [req]
                                                      (let [parameters (:parameters req)
@@ -165,7 +175,7 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                                               (:master_name
                                                                (db/get-channel {:chan_name chan})))
                                                          {:state 200
-                                                          :body (create-close-key chan)}
+                                                          :body (create-invite-key chan uname)}
                                                          {:status 406
                                                           :body "error"})))
                                           :middleware [ring.middleware.cookies/wrap-cookies]}}]

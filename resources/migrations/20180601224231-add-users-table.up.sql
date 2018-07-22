@@ -10,6 +10,10 @@ CREATE TABLE CHANNELS
 master_name VARCHAR (30) REFERENCES USERS (user_name),
 inviter_name VARCHAR (30) REFERENCES USERS (user_name),
 info VARCHAR (30),
+inviter_face smallint DEFAULT 0,
+inviter_bg smallint DEFAULT 0,
+master_face smallint DEFAULT 0,
+master_bg smallint DEFAULT 0,
 PRIMARY KEY (chan_name, master_name)
 );
 

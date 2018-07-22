@@ -34,7 +34,6 @@
                         <canvas id="opdisplay-container" class="display-container" width="500px" height=400px"  style="background-color:#636367;"></canvas>
                     </div>
                 </div>
-                
                 <div class="container m-1 text-center" style="width:350px">
                     <div><h1>コメント</h1></div>
                     <div class="text-center">
@@ -52,10 +51,19 @@
             </div>
         </div>
 
+        <div id="cc" class="container">
+            <div class="raw text-center">
+                <p>
+                    <div id="invite-form">
+                        <input id="invite-name" name="invite-text" type="text" />
+                        <button id="invite-btn">送信</button>
+                    </div>
+                </p>
+            </div>
+        </div>
 
         <!-- scripts and styles -->
         <script>
-         // new -------------------------------------------------------------------
          // get channel user
          const talkers = new XMLHttpRequest();
          talkers.responseType = "json";
@@ -80,6 +88,24 @@
              }
          });
          talkers.send();
+
+         const skins = new XMLHttpRequest();
+         var master_face;
+         var master_bg;
+         var slave_face;
+         var slave_bg;
+         skins.responseType = "json";
+         skins.open("GET", window.location.protocol + "//" + window.location.host + "/vchats-api/" + window.location.pathname.split("/")[2] + "/get-skins");
+         skins.addEventListener("load",(event) => {
+             if (200 == event.target.status) {
+                 console.log(event.target.response);
+                 master_face = event.target.response["master_face"];
+                 master_bg = event.target.response["master_bg"];
+                 slave_face = event.target.response["inviter_face"];
+                 slave_bg = event.target.response["inviter_bg"];
+             }
+         });
+         skins.send();
         </script>
         {% style "/assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" %}
 
@@ -127,45 +153,6 @@
         <script src="/static/facetrack/clmtrackr.min.js"></script>
         <script src="/static/facetrack/pixi.min.js"></script>
         <script type="module" src="/static/SpeakerTag.js"></script>
-        <script type="text/javascript">
-         // * how to invite another one?
-         // webSocket.send(JSON.stringify({type : "invite",
-         //                                name : <user-name>,
-         //                                params : {key : <key>
-         //                                          name : <another-name>}}));
-         //    ** what is <key>?
-         //         Please go to /swagger-ui
-         //            and input https://elect-remote.softether.net/vchats-api/swagger.json into the top of form,
-         //            and see default->/vchats-api/{channel}/invite
-         //    ** if invitation is valid,
-         //          we can get the json {type : invite, params : <another-name>}
-         //
-
-         // * how to accept invitation?
-         // webSocket.send(JSON.stringify({type : "accept",
-         //                                name : <user-name>}}));
-         //    ** if accepting is valid,
-         //          we can get the json {type : accept, params : <user-name>}
-
-         // note -----------------------------------
-         // - how to send face information
-         // webSocket.send(JSON.stringify({type : "face", name : "owner",
-         //                                params : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}));
-         // - how to send message
-         // webSocket.send(JSON.stringify({type : "message",
-         //                                name : "elect",
-         //                                params : message}));
-         //                  *  name : get from cookie
-         // - how to send greeting (inform them login into the channel)
-         // webSocket.send(JSON.stringify({type : "greeting",
-         //                                name : "elect",
-         //                                params : "hogehoge"}));
-         // ----------------------------------------
-
-         
-         // -------------------------------------------------------------------
-        </script>
-
 
         <div>
             <speaker-tag id="speakertag"></speaker-tag>
@@ -175,6 +162,9 @@
         <vtuber-frame id="vtubertag1"></vtuber-frame>
         <vtuber-frame id="vtubertag2"></vtuber-frame>
 
+        <div id="accept-button" class="d-none">
+            <button id="accepter">accept</button>
+        </div>
         <script type="module">
          import VTuberFrame from '/static/VTuberFrame.js'
 
@@ -244,7 +234,7 @@
              var p = message.substring(0,1);
              if (p == "{") {
                  var msgtag = $("<div style=\"text-align:left;\">").text(
-                     "[" + JSON.parse(message).name + "] " + 
+                     "[" + JSON.parse(message).name + "] " +
                      JSON.parse(message).params);
              } else {
                  var msgtag = $("<div style=\"text-align:left;background-color:#ffdfdf\">").text(message);
@@ -279,8 +269,34 @@
              })
          }
 
-         let stag = document.getElementById("speakertag");
+         var invitebtn = document.getElementById('invite-btn');
+         let inviters;
+         console.log(invitebtn);
+         invitebtn.addEventListener('click', function() {
+             var invite_name = document.getElementById('invite-name').value;
+             if (invite_name.length > 4) {
+                 console.log("invite!!!");
+                 inviters = new XMLHttpRequest();
+                 inviters.responseType = "json";
+                 inviters.open("GET",window.location.protocol +"//" + window.location.host + "/vchats-api/" + window.location.pathname.split("/")[2] + "/invite");
+                 inviters.addEventListener("load",(event) => {
+                     console.log(event.target);
+                     if (200 ==  event.target.status) {
+                         var invitekey = event.target.response.body;
+                         webSocket.send(JSON.stringify({type : "invite",
+                                                        name : Cookies.get("identity"),
+                                                        params : {key : invitekey,
+                                                                  name : document.getElementById('invite-name').value}}));
+                     }
+                     console.log(document.getElementById('invite-name').value);
+                     // http
+                     // websocket send ...
+                 });
+                 inviters.send();
+             }
+         });
 
+         let stag = document.getElementById("speakertag");
 
          if ((master == Cookies.get('identity')) || (slave == Cookies.get('identity'))) {
              stag.recognizer_active = true;
@@ -308,7 +324,14 @@
              /// 自分の顔を写すウィンドウとしてvtag1を使う
              vtag1 = document.getElementById('vtubertag1');
              vtag1.self_active = true;
-             // vtag1.comp_active = true;
+             if ((master == Cookies.get('identity'))) {
+                 vtag1.set_texture("BG", master_bg);
+                 vtag1.set_texture("FACE", master_face);
+             }
+             else {
+                 vtag1.set_texture("BG", slave_bg);
+                 vtag1.set_texture("FACE", slave_face);
+             }
 
              /// もしコールバック関数を設定したいなら
              /// 変数xは顔の情報を持つ71点の配列
@@ -357,15 +380,28 @@
              /// 相手側の顔を写すウィンドウとしてvtag2を使う
              vtag2 = document.getElementById('vtubertag2');
              vtag2.comp_active = true;
+             if (slave == Cookies.get('identity')) {
+                 vtag2.set_texture("BG", master_bg);
+                 vtag2.set_texture("FACE", master_face);
+             }
+             else {
+                 vtag2.set_texture("BG", slave_bg);
+                 vtag2.set_texture("FACE", slave_face);
+             }
          }
+         // for normal
          else {
              stag.recognizer_active = false;
              stag.comp_active = false;
              vtag1 = document.getElementById('vtubertag1');
              vtag1.comp_active = true;
+             vtag1.set_texture("BG", master_bg);
+             vtag1.set_texture("FACE", master_face);
 
              vtag2 = document.getElementById('vtubertag2');
              vtag2.comp_active = true;
+             vtag2.set_texture("BG", slave_bg);
+             vtag2.set_texture("FACE", slave_face);
 
          }
          /// ウェブソケットで話し相手の点情報を受け取り、相手側のウィンドウで表示したいとき
@@ -394,6 +430,15 @@
           *     }
           *     audio.play();
           * }*/
+
+         // for accept button
+         // on click
+         document.getElementById("accepter").onclick = function () {
+             console.log("push accept");
+             webSocket.send(JSON.stringify({type : "accept", name : Cookies.get("identity")}));
+         }
+         // webSocket.send({type : "accept", name : Cookies.get("identity")})
+
          function onMessage(event) {
              if (event && event.data) {
                  var obj = JSON.parse(event.data);
@@ -433,13 +478,14 @@
                  else if(obj.type == "master-points") {
                      if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
                          vtag1.set_points(obj.params);
-                     } else if (Cookies.get("identity") == master) {
                      }
                      else if (((Cookies.get("identity") == master)
-                            && (master == obj.name))
-                              || ((Cookies.get("identity") == slave)
-                               && (slave == obj.name))) {
+                            && (master == obj.name))) {
                          vtag1.set_points(obj.params);
+                     }
+                     else if ((Cookies.get("identity") == slave)
+                              && (slave == obj.name)) {
+                         vtag2.set_points(obj.params);
                      }
                      else {
                          vtag2.set_points(obj.params);
@@ -450,12 +496,12 @@
                      if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
                          vtag2.set_points(obj.params);
                      }
-                     else if (Cookies.get("identity") == slave) {
+                     else if ((Cookies.get("identity") == master)
+                              && (master == obj.name)) {
+                         vtag2.set_points(obj.params);
                      }
-                     else if (((Cookies.get("identity") == slave)
-                            && (master == obj.name))
-                              || ((Cookies.get("identity") == master)
-                               && (slave == obj.name))) {
+                     else if ((Cookies.get("identity") == slave)
+                              && (slave == obj.name)) {
                          vtag1.set_points(obj.params);
                      }
                      else {
@@ -466,23 +512,27 @@
                      if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
                          vtag1.set_texture(obj.params.key, obj.params.value);
                      }
-                     else if (((Cookies.get("identity") == master)
-                            && (master == obj.name))
-                              || ((Cookies.get("identity") == slave)
-                               && (slave == obj.name))) {
+                     else if ((Cookies.get("identity") == master)
+                              && (master == obj.name)) {
                          vtag1.set_texture(obj.params.key, obj.params.value);
                      }
-                     else {
+                     else if ((Cookies.get("identity") == slave)
+                              && (slave == obj.name)) {
                          vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else {
+                         vtag1.set_texture(obj.params.key, obj.params.value);
                      }
                  } else if (obj.type == "slave-skin") {
                      if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
                          vtag2.set_texture(obj.params.key, obj.params.value);
                      }
-                     if (((Cookies.get("identity") == slave)
-                       && (master == obj.name))
-                         || ((Cookies.get("identity") == master)
-                          && (slave == obj.name))) {
+                     if ((Cookies.get("identity") == master)
+                         && (master == obj.name)) {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else if ((Cookies.get("identity") == slave)
+                              && (slave == obj.name)) {
                          vtag1.set_texture(obj.params.key, obj.params.value);
                      }
                      else {
@@ -490,10 +540,31 @@
                      }
                  }
                  else if(obj.type == "invite") {
+                     console.log(obj.params);
+                     // if invited
+                     if (obj.params == Cookies.get("identity")) {
+                         document.getElementById("accept-button").className="d-block";
+                     }
+                     // show accept button
                      chat(event.data);
                  }
                  else if(obj.type == "accept") {
-                     console.log(obj.params);
+                     document.getElementById("accept-button").className="d-none";
+                     slave = obj.name;
+                     document.getElementById("oc").style.display = "block";
+                     if (slave == Cookies.get("identity")) {
+                         vtag1.self_active = true;
+                         vtag1.set_texture("BG", slave_bg);
+                         vtag1.set_texture("FACE", slave_face);
+                         vtag2.comp_active = true;
+                         vtag2.set_texture("BG", master_bg);
+                         vtag2.set_texture("FACE", master_face);
+                     } else {
+                         vtag2.comp_active = true;
+                         vtag2.set_texture("BG", slave_bg);
+                         vtag2.set_texture("FACE", slave_face);
+                     }
+                     chat(event.data);
                  }
              }
          }

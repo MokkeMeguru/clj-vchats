@@ -17,6 +17,8 @@
        (= name (:master_name (db/get-channel {:chan_name chan-name}))))
     (let [s (random-str)]
       (swap! inviting assoc chan-name s)
+      (println @inviting)
+      (println s)
       (ring.util.http-response/ok s))
     (ring.util.http-response/not-acceptable "error")))
 
@@ -70,7 +72,7 @@
       (do
         (db/set-inviter! {:inviter_name invite-user
                           :chan_name chan-name})
-        (swap! inviting dissoc! chan-name)
+        (swap! inviting dissoc chan-name)
         true)
       false)))
 ;; -----------------------------------------------------
@@ -80,5 +82,3 @@
 ;; (db/get-user {:name "hoge"})  => nil
 
 ;; (:master_name (db/get-channel {:chan_name "111111"})) => check not being same
-
-

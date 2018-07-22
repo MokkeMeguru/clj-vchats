@@ -5,6 +5,7 @@
             [clj-vchats.db.core :as db]
             [clj-vchats.routes.services.closing :as closing]
             [clj-vchats.routes.services.invite :as invite]
+            [clj-vchats.routes.services.skin :as skin]
             [clj-vchats.routes.services.audio :refer [get-audio-b64]]))
 
 (def channels (atom {}))
@@ -47,20 +48,25 @@
               (print channel msg "\n")
               (send! channel msg))))
         "invite"
-        (let [uname (:name mmsg)
-              params (:params mmsg)
-              key (:key params)
-              iname (:name params)]
-          (when (invite/check-invite-key channel-name key)
-            (when (invite/invite-channel channel-name iname)
-              (doseq [channel in-channels]
-                (send! channel (json/write-str {:type "invite"
-                                                :params iname}))))))
+        (do
+          (print "invite" mmsg)
+          (let [uname (:name mmsg)
+               params (:params mmsg)
+               key (:key params)
+               iname (:name params)]
+           (when (invite/check-invite-key channel-name key)
+             (when (invite/invite-channel channel-name iname)
+               (doseq [channel in-channels]
+                 (send! channel (json/write-str {:type "invite"
+                                                 :params iname})))))))
         "accept"
-        (let [uname (:name mmsg)]
-          (when (invite/accept-invite channel-name uname)
-            (doseq [channel in-channels]
-              (send! channel mmsg))))
+        (do (print mmsg)
+            (let [uname (:name mmsg)]
+              (print uname)
+           (when (invite/accept-invite channel-name uname)
+             (doseq [channel in-channels]
+               (send! channel msg)))
+           ))
         "talk"
         (let [uname (:name mmsg)
               params (:params mmsg)
@@ -77,6 +83,22 @@
                                 {:type "voice-data"
                                  :name uname
                                  :params b64-voice}))))))
+        "slave-skin"
+        (let [params (:params mmsg)
+              uname (:name mmsg)
+              k (:key params)
+              v (:value params)]
+          ;; save slave skin
+          (when (skin/save-slave-skin uname k v channel-name)
+            (doseq [channel in-channels] (send! channel msg))))
+        "master-skin"
+        (let [params (:params mmsg)
+              uname (:name mmsg)
+              k (:key params)
+              v (:value params)]
+          ;; save master skin
+          (when (skin/save-master-skin uname k v channel-name)
+            (doseq [channel in-channels] (send! channel msg))))
         (doseq [channel in-channels] (send! channel msg)))
       (doseq [channel in-channels]
         (send! channel (json/write-str {:type "error"
@@ -103,3 +125,7 @@
 ;;            "voice" : voice,
 ;;            "rate" : rate,
 ;;            "pitch" : pitch}}
+
+
+;; (if (< 2 (count "")) true false)
+;; (json/read-str "{}")

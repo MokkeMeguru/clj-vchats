@@ -86,3 +86,28 @@ WHERE chan_name = :chan_name
 UPDATE CHANNELS
 SET inviter_name = NULL
 WHERE chan_name = :chan_name
+
+-- :name set-inviter-face! :! :1
+UPDATE CHANNELS
+SET inviter_face = :inviter_face
+WHERE chan_name = :chan_name
+
+-- :name set-inviter-bg! :! :1
+UPDATE CHANNELS
+SET inviter_bg = :inviter_bg
+WHERE chan_name = :chan_name
+
+-- :name set-master-face! :! :1
+UPDATE CHANNELS
+SET master_face = :master_face
+WHERE chan_name = :chan_name
+
+-- :name set-master-bg! :! :1
+UPDATE CHANNELS
+SET master_bg = :master_bg
+WHERE chan_name = :chan_name
+
+-- :name get-skin :? :1
+-- :doc get master user
+SELECT master_face, master_bg, inviter_face, inviter_bg FROM CHANNELS
+WHERE chan_name = :chan_name
