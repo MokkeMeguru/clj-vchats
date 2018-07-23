@@ -115,7 +115,7 @@
                              :parameters {:path {:cname string?}}
                              :handler (fn [req] (let [uname (:value
                                                             (get (:cookies req) "identity"))
-                                                      chan_name (-> req :parameters :path :cname)]
+                                                      chan_name (ring.util.codec/url-decode (-> req :parameters :path :cname))]
                                                   (if (db/get-user {:name uname})
                                                     (if (db/get-channel {:chan_name chan_name})
                                                       (channel-page req)

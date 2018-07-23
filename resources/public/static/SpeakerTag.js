@@ -18,23 +18,20 @@ export default class SpeakerTag extends HTMLElement{
           #container {
             background-color: #333333;
             height: 100px;
-            width: 600px;
-            display: flex;
+            width: 320px;
+            display: block;
+            margin-top: 20px
           }
 
           #icon-div {
-            flex-grow: 1;
-            flex-basis: 50%;
           }
 
           #slider-div {
-       
             flex-grow: 2;
             flex-basis: 30%;
             width: 300px;
-            position: relative;
-            top: 20px;
-            
+            height: 30px;
+            margin-top: 40px;
           }
 
           select{
@@ -67,13 +64,9 @@ export default class SpeakerTag extends HTMLElement{
           }
 
           #selectW{
-              position: relative;
-              right: 350px;
-              top: 55px;
               display: inline-block;
               height:30px;
-              
-
+              position:relative;
           }
 
           #selectW::before{
@@ -106,21 +99,20 @@ export default class SpeakerTag extends HTMLElement{
             background-color: white;
             border: none;
             color: #FF5959;
-            height: 25px;
-            width:100px;
+            height: 30px;
+            width:130px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
             font-size: 20px;
-            margin: 10px 0 0 0;
+
             -webkit-transition-duration: 0.4s; /* Safari */
             transition-duration: 0.4s;
             cursor: pointer;
             border-radius:2px;
             font-family: Bahnschrift;
             position: relative;
-            top:5px;
-            left:150px;
+
           }
 
           input[type=range]{
@@ -145,24 +137,27 @@ export default class SpeakerTag extends HTMLElement{
           }
           .rate_p{
           color: white;
-          width:180px;
+          width:275px;
       
-          padding-left: 5px;
+          padding-left: 45px;
           border:1px solid #757575;
           border-radius:2px;
           position: relative;
           top: -20px;
-          
+
+          text-align:left;
           }
           .pitch_p{
           color: white;
-          width:180px;
+          width:275px;
           
-          padding-left: 5px;
+          padding-left: 45px;
           border:1px solid #757575;
           border-radius:2px;
           position: relative;
           top:-60px;
+
+          text-align:left;
           }
           #pitch{
           position: relative;
@@ -172,37 +167,40 @@ export default class SpeakerTag extends HTMLElement{
 
         </style>
         <div id="container" class="speaker-tag-container">
-          <div id="icon-div">
-          <canvas class="canv" id="recording"></canvas>
-           <input type="button" id="record-btn" value="record"></input>
+          <div class="row" style="display:flex;width:320px">
+            <div id="icon-div" style="width:120px">
+              <canvas class="canv" id="recording"></canvas>
+
+              <input type="button" id="record-btn" value="record" style="left:15px"></input>
+            </div>
+            <div id="selectW" style="left:60px">
+              <select id="voice" style="width:9em">
+                <optgroup label="男性" style="color:black">
+                  <option value="koutarou" style="background-color:gray">男性高め</option>
+                  <option value="osamu" style="background-color:gray">男性普通1</option>
+                  <option value="seiji" style="background-color:gray">男性普通2</option>
+                  <option value="hiroshi" style="background-color:gray">男性低め</option>
+                </optgroup>
+                <optgroup label="女性" style="color:black">
+                   <option value="kaho" style="background-color:gray">女性高め</option>
+                   <option value="nozomi" style="background-color:gray">女性普通1</option>
+                   <option value="akari" style="background-color:gray">女性普通2</option>
+                   <option value="nanako" style="background-color:gray">女性低め</option>
+                </optgroup>
+                <optgroup label="キャラクター" style="color:black">
+                  <option value="sumire" style="background-color:gray">結月 ゆかり</option>
+                  <option value="maki" style="background-color:gray">弦巻 マキ</option>
+                  <option value="anzu" style="background-color:gray">月詠 アイ</option>
+                </optgroup>
+              </select>
+            </div>
           </div>
           <div id="slider-div">
-            <p class="rate_p">速さ: </p><input type="range" id="rate"  min='0.0' max='2.0', step='0.1'>
+            <p class="rate_p">速さ: </p><input type="range" id="rate"  min='0.0' max='2.0', step='0.1' style="width:180px;left:70px">
 
-            <p class="pitch_p">高さ: </p><input type="range" id="pitch" min='0.0' max='2.0', step='0.1'>
+            <p class="pitch_p">高さ: </p><input type="range" id="pitch" min='0.0' max='2.0', step='0.1' style="width:180px;left:70px">
              </div>
-            <div id="selectW">
-
-            <select id="voice" style="width:9em">
-              <optgroup label="男性" style="color:black">
-               <option value="koutarou" style="background-color:gray">男性高め</option>
-               <option value="osamu" style="background-color:gray">男性普通1</option>
-               <option value="seiji" style="background-color:gray">男性普通2</option>
-               <option value="hiroshi" style="background-color:gray">男性低め</option>
-              </optgroup>
-              <optgroup label="女性" style="color:black">
-               <option value="kaho" style="background-color:gray">女性高め</option>
-               <option value="nozomi" style="background-color:gray">女性普通1</option>
-               <option value="akari" style="background-color:gray">女性普通2</option>
-               <option value="nanako" style="background-color:gray">女性低め</option>
-              </optgroup>
-              <optgroup label="キャラクター" style="color:black">
-               <option value="sumire" style="background-color:gray">結月 ゆかり</option>
-               <option value="maki" style="background-color:gray">弦巻 マキ</option>
-               <option value="anzu" style="background-color:gray">月詠 アイ</option>
-              </optgroup>
-            </select>
-            </div>
+            
         </div>
       `;
 

@@ -117,7 +117,7 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                      :parameters {:path {:channel string?}}
                                      :handler (fn [req]
                                                 (let [parameters (:parameters req)
-                                                      chan (-> parameters :path :channel)
+                                                      chan (ring.util.codec/url-decode (-> parameters :path :channel))
                                                       info (db/get-channel {:chan_name chan})
                                                       master-name (:master_name info)
                                                       inviter-name (:inviter_name info)]
@@ -130,7 +130,7 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                     :parameters {:path {:channel string?}}
                                     :handler (fn [req]
                                                (let [parameters (:parameters req)
-                                                     chan (-> parameters :path :channel)]
+                                                     chan (ring.util.codec/url-decode (-> parameters :path :channel))]
                                                  (get-skins chan)))}}]
       ["/:channel/close-channel" {:summary "チャンネルを閉じます。"
                                    :description
@@ -142,7 +142,7 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                                      (let [parameters (:parameters req)
                                                            uname (:value
                                                                   (get (:cookies req) "identity"))
-                                                           chan (-> parameters :path :channel)]
+                                                           chan (ring.util.codec/url-decode (-> parameters :path :channel))]
                                                        (println uname ":" chan ":"
                                                                 (:master_name
                                                                  (db/get-channel {:chan_name chan})))
@@ -167,7 +167,7 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                                      (let [parameters (:parameters req)
                                                            uname (:value
                                                                   (get (:cookies req) "identity"))
-                                                           chan (-> parameters :path :channel)]
+                                                           chan (ring.util.codec/url-decode (-> parameters :path :channel))]
                                                        (println uname ":" chan ":" (:master_name
                                                                                     (db/get-channel {:chan_name chan})))
                                                        ;;(create-close-key chan)
@@ -195,7 +195,7 @@ Future: チャンネルの名前をランダムな衝突しない値(ex. 00ex492
                                :parameters {:path {:chan string?}}
                                :handler
                                (fn [{:keys [parameters]}]
-                                 (let [c-name (-> parameters :path :chan)]
+                                 (let [c-name (ring.util.codec/url-decode (-> parameters :path :chan))]
                                    {:status 200
                                     :body {:messages
                                            (reverse

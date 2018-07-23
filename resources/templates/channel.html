@@ -10,57 +10,95 @@
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
         {% style "/assets/bootstrap/css/bootstrap.min.css" %}
         <link rel="stylesheet" href="/css/channel-style.css" type="text/css">
-        
     </head>
 
     <body>
-        <div class="container mt-2">
-            <div clas="row">
-                <h1 id="title">Welcome to the channel</h1>
-            </div>
+        <script type="module" src="/static/VTuberFrame.js"></script>
+        <script src="/static/facetrack/model_pca_20_svm.js"></script>
+        <script src="/static/facetrack/clmtrackr.min.js"></script>
+        <script src="/static/facetrack/pixi.min.js"></script>
+        <script type="module" src="/static/SpeakerTag.js"></script>
+
+        <div class="container mt-2" style="width:1000px;height:130px">
+           <div class="row">
+               <div id="tt" class="col-8"><h1 id="title">Welcome to the channel</h1></div>
+               <div class="col-4">
+                   <div id="accept-button" class="d-none">
+                       <button id="accepter" style="
+                                   width: 300px;
+                                   background-color: #FF5959;
+                                   border: none;
+                                   color: white;
+                                   font-size: 22px;
+                                   height: 40px;
+                                   border-radius: 2px;
+                                   ">accept</button>
+                   </div>
+                   <div id="cc" class="container" style="width: 300px;padding: 0;">
+                       <div class="raw text-center">
+                           <input id="close-btn" class="close-btn" type="button" value="ライブを終了">
+                       </div>
+                       <div id="cc" class="container">
+                           <div class="row text-center">
+                               <div id="invite-form" style="display:flex" class="pt-0 mt-0 pb-0 mb-0">
+                                   <div><input id="invite-name" name="invite-text" type="text" style="width:240px;height:40px" placeholder="招待したい人の名前を入力" /></div>
+                                   <div><button id="invite-btn" style="background-color:#FF5959;color:white;font-size:22px;border:none;height:40px;width:60px">招待</button></div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+
         </div>
         <script>
-         document.getElementById("title").innerHTML=window.location.pathname.split("/")[2];
+         document.title="Welcome to " + decodeURI(window.location.pathname.split("/")[2]);
+         document.getElementById("title").innerHTML=decodeURI(window.location.pathname.split("/")[2]);
         </script>
-        <hr class="mt-0">
 
-        <div style="margin:10px;width:900px">
+        <hr class="mt-0 mb-0">
+        <div style="margin:auto;width:1000px">
             <div class="row">
-                <div class="container" style="width:540px;margin:10px">
-                    <div>
-                        <canvas id="mydisplay-container" class="display-container" width="500px" height="400px" style="background-color:#636367;"></canvas>
+                <video id="video" style="height:0;margin:0;padding:0"></video> <!-- 撮影をするために必要 -->
+                <div class="container mt-0" style="width:640px;margin:10px">
+                    <div id="master_frame">
+                        <vtuber-frame id="vtubertag1"></vtuber-frame>
                     </div>
                     <div id="oc">
-                        <canvas id="opdisplay-container" class="display-container" width="500px" height=400px"  style="background-color:#636367;"></canvas>
+                        <vtuber-frame id="vtubertag2"></vtuber-frame>
                     </div>
                 </div>
-                <div class="container m-1 text-center" style="width:350px">
-                    <div><h1>コメント</h1></div>
-                    <div class="text-center">
-                        <input type="text" data-name="message" size="100" style="width:320px">
+                <div class="container m-0 text-center" style="width:350px">
+                    <div class="container p-0 mt-0" style="height:120px">
+                        <speaker-tag id="speakertag"></speaker-tag>
                     </div>
-                    <div class="log" data-name="chat" style="width:320px;height:720px;background-color:white;color:black"></div>
+
+                    <div>
+                        <div class="text-center" style="background-color:white;border: #FF5959 solid 2px;border-bottom:  none;"><p class="m-0 p-0" style="font-size:20px">コメント</p></div>
+                        <div class="log" data-name="chat" style="width:320px;height:580px;background-color:white;color:black;overflow: scroll;border: #FF5959 solid 2px;border-top: #d8caca solid 2px;">
+                    </div>
+                    <div class="text-center">
+                        <input type="text" data-name="message" size="100" style="margin-top:10px;width:320px;height:30px" placeholder="コメントを入力">
+                        <style type="text/css">
+                         ::-webkit-input-placeholder {
+                             padding-left:1em;
+                         }
+                         ::-moz-placeholder {
+                             padding-left:1em;
+                         }
+                         :-ms-input-placeholder {
+                             padding-left:1em;
+                         }
+                         :-moz-placeholder {
+                             padding-left:1em;
+                         }
+                        </style>
+                    </div>
                 </div>
             </div>
         </div>
         <hr>
-        <div id="cc" class="container">
-            <div class="raw text-center">
-                <p>
-                    <input id="close-btn" class="close-btn" type="button" value="ライブを終了"></p>
-            </div>
-        </div>
-
-        <div id="cc" class="container">
-            <div class="raw text-center">
-                <p>
-                    <div id="invite-form">
-                        <input id="invite-name" name="invite-text" type="text" />
-                        <button id="invite-btn">送信</button>
-                    </div>
-                </p>
-            </div>
-        </div>
 
         <!-- scripts and styles -->
         <script>
@@ -71,7 +109,6 @@
          var slave;
          talkers.open("GET",window.location.protocol +"//" + window.location.host + "/vchats-api/" + window.location.pathname.split("/")[2] + "/get-talker");
          talkers.addEventListener("load",(event) => {
-
              // console.log(event);
              if (200 ==  event.target.status) {
                  master = event.target.response["master"];
@@ -79,11 +116,13 @@
                  if (Cookies.get('identity') != master) {
                      var eleme = document.getElementById("cc");
                      eleme.style.display = "none";
+                     document.getElementById("tt").classList.remove("col-8");
+                     document.getElementById("tt").classList.add("col-12");
                  }
                  if (!slave) {
-                     // goto below
                      var elem = document.getElementById("oc");
                      elem.style.display = "none";
+                     document.getElementById("master_frame").style.marginTop='50px';
                  }
              }
          });
@@ -131,40 +170,25 @@
          // ---------------------------------------------------
 
          // set canvas ----------------------------------------
-         var width = 300;
-         var height = 200;
+         /* var width = 300;
+          * var height = 200;
 
-         var stage = new PIXI.Stage(0x000000);
+          * var stage = new PIXI.Stage(0x000000);
 
-         var renderer = PIXI.autoDetectRenderer(width, height);
+          * var renderer = PIXI.autoDetectRenderer(width, height);
 
-         document.getElementById("mydisplay-container").appendChild(renderer.view);
+          * document.getElementById("mydisplay-container").appendChild(renderer.view);
 
-         function animate(){
-             requestAnimationFrame(animate);
-         }
+          * function animate(){
+          *     requestAnimationFrame(animate);
+          * }
 
-         animate();
+          * animate();*/
          // --------------------------------------------------------------
         </script>
 
-        <script type="module" src="/static/VTuberFrame.js"></script>
-        <script src="/static/facetrack/model_pca_20_svm.js"></script>
-        <script src="/static/facetrack/clmtrackr.min.js"></script>
-        <script src="/static/facetrack/pixi.min.js"></script>
-        <script type="module" src="/static/SpeakerTag.js"></script>
 
-        <div>
-            <speaker-tag id="speakertag"></speaker-tag>
-        </div>
-
-        <video id="video"></video> <!-- 撮影をするために必要 -->
-        <vtuber-frame id="vtubertag1"></vtuber-frame>
-        <vtuber-frame id="vtubertag2"></vtuber-frame>
-
-        <div id="accept-button" class="d-none">
-            <button id="accepter">accept</button>
-        </div>
+        
         <script type="module">
          import VTuberFrame from '/static/VTuberFrame.js'
 
@@ -233,9 +257,14 @@
              // console.log("message" + message);
              var p = message.substring(0,1);
              if (p == "{") {
+                 // if (JSON.parse(message).type == "invite") {
+                 //    var msgtag = $("<div style=\"text-align:left\">").text();
+                 //}
+                 //else {
                  var msgtag = $("<div style=\"text-align:left;\">").text(
                      "[" + JSON.parse(message).name + "] " +
                      JSON.parse(message).params);
+                 //}
              } else {
                  var msgtag = $("<div style=\"text-align:left;background-color:#ffdfdf\">").text(message);
              }
@@ -249,13 +278,14 @@
          var btn =  document.querySelector('input[name=close-button]');
          var pass;
          document.getElementById('close-btn').addEventListener('click',
+
                                                                function() {
                                                                    // console.log("clicked");
                                                                    $.ajax({
                                                                        url: close_name,
                                                                        type: 'POST',
                                                                    }).done(function(data) {
-                                                                       alert("SUCCESS\n next: send messaage to websocket");
+                                                                       alert("SUCCESS\nThis channel will be closed");
                                                                        pass = data;
                                                                        // console.log (pass);
                                                                        webSocket.send(JSON.stringify({type : "close",
@@ -284,6 +314,7 @@
                      console.log(event.target);
                      if (200 ==  event.target.status) {
                          var invitekey = event.target.response.body;
+                         console.log("send!!!");
                          webSocket.send(JSON.stringify({type : "invite",
                                                         name : Cookies.get("identity"),
                                                         params : {key : invitekey,
@@ -337,7 +368,8 @@
              /// もしコールバック関数を設定したいなら
              /// 変数xは顔の情報を持つ71点の配列
              /// ウェブソケットで点の情報を送るときもこれをつかう
-             let callback = (points) => {
+             vtag1.callback = (points) => {
+                 console.log(slave);
                  if (webSocket.readyState == 1) {
                      // console.log(points);
                      // WEBSOCKET_SEND_MESSAGE1(points)
@@ -348,14 +380,14 @@
                                              params : points}));
                      }
                      else if (slave == Cookies.get('identity')) {
+                         console.log("slave???");
                          webSocket.send(
                              JSON.stringify({type : "slave-points",
                                              name : Cookies.get('identity'),
                                              params : points}));
                      }
                  }
-             }
-             vtag1.callback = callback;
+             };
 
              ///　背景や顔のスキンを変更した時に使うコールバック
              /// 画面横のオプションで更新するたびに呼び出される。
@@ -384,6 +416,7 @@
              /// 相手側の顔を写すウィンドウとしてvtag2を使う
              vtag2 = document.getElementById('vtubertag2');
              vtag2.comp_active = true;
+             console.log(vtag2);
              if (slave == Cookies.get('identity')) {
                  vtag2.set_texture("BG", master_bg);
                  vtag2.set_texture("FACE", master_face);
@@ -439,14 +472,15 @@
          // on click
          document.getElementById("accepter").onclick = function () {
              console.log("push accept");
-             webSocket.send(JSON.stringify({type : "accept", name : Cookies.get("identity")}));
+             if(confirm('Accept invitation')){
+                 webSocket.send(JSON.stringify({type : "accept", name : Cookies.get("identity")}));
+             }
          }
          // webSocket.send({type : "accept", name : Cookies.get("identity")})
-
          function onMessage(event) {
              if (event && event.data) {
                  var obj = JSON.parse(event.data);
-                 // console.log(obj.type);
+                 console.log(obj.type);
                  if (obj.type == "voice-data") {
                      var voice = obj.params;
                      var audio = new Audio("data:audio/wav;base64," + voice);
@@ -477,6 +511,7 @@
                  }
                  else if(obj.type == "close") {
                      chat(event.data);
+                     alert("Notice\nThis Channel was closed");
                      window.location.replace("channels");
                  }
                  else if(obj.type == "master-points") {
@@ -545,15 +580,18 @@
                  else if(obj.type == "invite") {
                      console.log(obj.params);
                      // if invited
+                     // show accept button
                      if (obj.params == Cookies.get("identity")) {
+                         document.getElementById("tt").classList.remove("col-12");
+                         document.getElementById("tt").classList.add("col-8");
                          document.getElementById("accept-button").className="d-block";
                      }
-                     // show accept button
-                     chat(event.data);
+                     chat("<info> " + JSON.parse(event.data).params + " さんが招待されました");
                  }
                  else if(obj.type == "accept") {
                      document.getElementById("accept-button").className="d-none";
                      slave = obj.name;
+                     document.getElementById("master_frame").style.marginTop='0';
                      document.getElementById("oc").style.display = "block";
                      if (slave == Cookies.get("identity")) {
                          vtag1.self_active = true;
@@ -562,12 +600,37 @@
                          vtag2.comp_active = true;
                          vtag2.set_texture("BG", master_bg);
                          vtag2.set_texture("FACE", master_face);
+                         
+                         document.getElementById("tt").classList.remove("col-8");
+                         document.getElementById("tt").classList.add("col-12");
+                         vtag1.callback = (points) => {
+                             console.log(slave);
+                             if (webSocket.readyState == 1) {
+                                 // console.log(points);
+                                 // WEBSOCKET_SEND_MESSAGE1(points)
+                                 if (master == Cookies.get('identity')) {
+                                     webSocket.send(
+                                         JSON.stringify({type : "master-points",
+                                                         name : Cookies.get('identity'),
+                                                         params : points}));
+                                 }
+                                 else if (slave == Cookies.get('identity')) {
+                                     console.log("slave???");
+                                     webSocket.send(
+                                         JSON.stringify({type : "slave-points",
+                                                         name : Cookies.get('identity'),
+                                                         params : points}));
+                                 }
+                             }
+                         };
+                         
                      } else {
                          vtag2.comp_active = true;
                          vtag2.set_texture("BG", slave_bg);
                          vtag2.set_texture("FACE", slave_face);
                      }
-                     chat(event.data);
+
+                     chat("<info> " + JSON.parse(event.data).name + "さんが参加しました");
                  }
              }
          }

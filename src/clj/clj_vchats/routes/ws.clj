@@ -53,7 +53,8 @@
           (let [uname (:name mmsg)
                params (:params mmsg)
                key (:key params)
-               iname (:name params)]
+                iname (:name params)]
+            (println uname "to" key "+" iname);
            (when (invite/check-invite-key channel-name key)
              (when (invite/invite-channel channel-name iname)
                (doseq [channel in-channels]
@@ -105,7 +106,7 @@
                                         :params "channel was closed"}))))))
 (defn ws-handler [req]
   (with-channel req channel
-    (let [channel-name (-> req :parameters :path :id)]
+    (let [channel-name (ring.util.codec/url-decode (-> req :parameters :path :id))]
       (connect! channel channel-name)
       (on-close channel #(disconnect! channel channel-name %))
       (on-receive channel #(notify-clients channel-name %)))))
