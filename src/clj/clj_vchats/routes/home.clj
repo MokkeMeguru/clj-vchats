@@ -45,9 +45,12 @@
   [["/" {:get {:handler    home-page
                :middleware [middleware/wrap-csrf
                             middleware/wrap-formats]}}]
-   ["/ws" {:get {:handler (fn [_]
-                            (-> (response/ok (-> "templates/test.html" io/resource slurp))
-                                (response/header "Content-Type" "text/html; charset=utf-8")))}}]
+   ["/knocking-door" {:get {:handler
+                            (fn [_] (layout/render "test.html"))
+                            ;; (fn [_]
+                            ;;   (-> (response/ok (-> "templates/test.html" io/resource slurp))
+                            ;;       (response/header "Content-Type" "text/html; charset=utf-8")))
+                            }}]
    ["/docs" {:get {:handler (fn [_]
                               (-> (response/ok (-> "docs/docs.md" io/resource slurp))
                                   (response/header "Content-Type" "text/plain; charset=utf-8")))}}]

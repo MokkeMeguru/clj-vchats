@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="container m-0 text-center" style="width:350px">
-                    <div class="container p-0 mt-0" style="height:120px">
+                    <div id="speaks" class="container p-0 mt-0" style="height:120px;display:none">
                         <speaker-tag id="speakertag"></speaker-tag>
                     </div>
 
@@ -331,10 +331,14 @@
          let stag = document.getElementById("speakertag");
 
          if ((master == Cookies.get('identity')) || (slave == Cookies.get('identity'))) {
+
+             document.getElementById("speaks").style.display='block';
+
              stag.recognizer_active = true;
              stag.comp_active = true;
              stag.callback = (text, v, p, r) => {
                  if (webSocket.readyState == 1) {
+                     console.log("send talk : 2");
                      webSocket.send(
                          JSON.stringify({type : "talk",
                                          name : Cookies.get('identity'),
@@ -357,10 +361,12 @@
              vtag1 = document.getElementById('vtubertag1');
              vtag1.self_active = true;
              if ((master == Cookies.get('identity'))) {
+                 console.log("set texture 364");
                  vtag1.set_texture("BG", master_bg);
                  vtag1.set_texture("FACE", master_face);
              }
              else {
+                 console.log("set texture 369");
                  vtag1.set_texture("BG", slave_bg);
                  vtag1.set_texture("FACE", slave_face);
              }
@@ -369,7 +375,7 @@
              /// 変数xは顔の情報を持つ71点の配列
              /// ウェブソケットで点の情報を送るときもこれをつかう
              vtag1.callback = (points) => {
-                 console.log(slave);
+                 //console.log(slave);
                  if (webSocket.readyState == 1) {
                      // console.log(points);
                      // WEBSOCKET_SEND_MESSAGE1(points)
@@ -380,7 +386,7 @@
                                              params : points}));
                      }
                      else if (slave == Cookies.get('identity')) {
-                         console.log("slave???");
+                         // console.log("slave???");
                          webSocket.send(
                              JSON.stringify({type : "slave-points",
                                              name : Cookies.get('identity'),
@@ -395,7 +401,7 @@
                  // console.log(key, value);
                  console.log(Cookies.get('identity'));
                  if (master == Cookies.get('identity')) {
-                     console.log(master);
+                     console.log("send skin : master 2");
                      webSocket.send(
                          JSON.stringify({type : "master-skin",
                                          name : Cookies.get('identity'),
@@ -403,31 +409,35 @@
                                                    value : value}}));
                  }
                  else if (slave == Cookies.get('identity')) {
-                     console.log(slave);
+                     console.log("send skin : slave 2");
                      webSocket.send(
                          JSON.stringify({type : "slave-skin",
                                          name : Cookies.get('identity'),
                                          params : {key : key,
                                                    value : value}}));
+
                  }
                  // WEBSOCKET_SEND_MESSAGE2(key, value);
-
              }
              /// 相手側の顔を写すウィンドウとしてvtag2を使う
              vtag2 = document.getElementById('vtubertag2');
              vtag2.comp_active = true;
              console.log(vtag2);
              if (slave == Cookies.get('identity')) {
+                 console.log("set texture 427");
                  vtag2.set_texture("BG", master_bg);
                  vtag2.set_texture("FACE", master_face);
              }
              else {
+                 console.log("set texture 432");
                  vtag2.set_texture("BG", slave_bg);
                  vtag2.set_texture("FACE", slave_face);
              }
          }
          // for normal
          else {
+             
+             console.log("set texture 440");
              stag.recognizer_active = false;
              stag.comp_active = false;
              vtag1 = document.getElementById('vtubertag1');
@@ -480,15 +490,67 @@
          function onMessage(event) {
              if (event && event.data) {
                  var obj = JSON.parse(event.data);
-                 console.log(obj.type);
-                 if (obj.type == "voice-data") {
+                 // console.log(obj.type);
+                 // ---------------------------------------------------------------------------------------
+                 if(obj.type == "master-skin") {
+                     console.log("set texture 496");
+                     console.log(obj.params.key, obj.params.value, obj.name);
+                     if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
+                         vtag1.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else if ((Cookies.get("identity") == master)
+                              && (master == obj.name)) {
+                         vtag1.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else if ((Cookies.get("identity") == slave)
+                              && (slave == obj.name)) {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                 } else if (obj.type == "slave-skin") {
+                     console.log("set texture 513");
+                     console.log(obj.params.key, obj.params.value, obj.name);
+                     if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                     if ((Cookies.get("identity") == master)
+                         && (master == obj.name)) {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else if ((Cookies.get("identity") == slave)
+                              && (slave == obj.name)) {
+                         vtag1.set_texture(obj.params.key, obj.params.value);
+                     }
+                     else {
+                         vtag2.set_texture(obj.params.key, obj.params.value);
+                     }
+                 }
+                 // ---------------------------------------------------------------------------------------------
+                 else if (obj.type == "voice-data") {
+                     console.log("voice");
                      var voice = obj.params;
                      var audio = new Audio("data:audio/wav;base64," + voice);
                      // console.log(obj.name);
                      audio.addEventListener('loadedmetadata', function() {
-                         console.log(obj.name);
-                         if ((Cookies.get("identity") != master)
-                             && (Cookies.get("identity") != slave)) {
+                         // console.log(obj.name);
+                         if (Cookies.get("identity") == master) {
+                             if (master == obj.name) {
+                                 vtag1.lipsynch_start(audio.duration*1000);
+                             } else {
+                                 vtag2.lipsynch_start(audio.duration*1000);
+                             }
+                         }
+                         else if (Cookies.get("identity") == slave) {
+                             if (slave == obj.name) {
+                                 vtag1.lipsynch_start(audio.duration*1000);
+                             } else {
+                                 vtag2.lipsynch_start(audio.duration*1000);
+                             }
+                         }
+                         else if ((Cookies.get("identity") != master)
+                                  && (Cookies.get("identity") != slave)) {
                              if (master == obj.name) {
                                  vtag1.lipsynch_start(audio.duration*1000);
                              }
@@ -546,37 +608,6 @@
                          vtag2.set_points(obj.params);
                      }
                  }
-                 else if(obj.type == "master-skin") {
-                     if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
-                         vtag1.set_texture(obj.params.key, obj.params.value);
-                     }
-                     else if ((Cookies.get("identity") == master)
-                              && (master == obj.name)) {
-                         vtag1.set_texture(obj.params.key, obj.params.value);
-                     }
-                     else if ((Cookies.get("identity") == slave)
-                              && (slave == obj.name)) {
-                         vtag2.set_texture(obj.params.key, obj.params.value);
-                     }
-                     else {
-                         vtag2.set_texture(obj.params.key, obj.params.value);
-                     }
-                 } else if (obj.type == "slave-skin") {
-                     if (((Cookies.get("identity")) != master) && (Cookies.get("identity") != slave)) {
-                         vtag2.set_texture(obj.params.key, obj.params.value);
-                     }
-                     if ((Cookies.get("identity") == master)
-                         && (master == obj.name)) {
-                         vtag2.set_texture(obj.params.key, obj.params.value);
-                     }
-                     else if ((Cookies.get("identity") == slave)
-                              && (slave == obj.name)) {
-                         vtag1.set_texture(obj.params.key, obj.params.value);
-                     }
-                     else {
-                         vtag2.set_texture(obj.params.key, obj.params.value);
-                     }
-                 }
                  else if(obj.type == "invite") {
                      console.log(obj.params);
                      // if invited
@@ -594,17 +625,37 @@
                      document.getElementById("master_frame").style.marginTop='0';
                      document.getElementById("oc").style.display = "block";
                      if (slave == Cookies.get("identity")) {
-                         vtag1.self_active = true;
-                         vtag1.set_texture("BG", slave_bg);
-                         vtag1.set_texture("FACE", slave_face);
-                         vtag2.comp_active = true;
-                         vtag2.set_texture("BG", master_bg);
-                         vtag2.set_texture("FACE", master_face);
+                         document.getElementById("speaks").style.display='block';
                          
                          document.getElementById("tt").classList.remove("col-8");
                          document.getElementById("tt").classList.add("col-12");
+
+                         vtag1.option_callback = (key, value) => {
+                             // console.log(key, value);
+                             console.log(Cookies.get('identity'));
+                             if (master == Cookies.get('identity')) {
+                                 // console.log(master);
+                                 console.log("send skin : master 1");
+                                 webSocket.send(
+                                     JSON.stringify({type : "master-skin",
+                                                     name : Cookies.get('identity'),
+                                                     params : {key : key,
+                                                               value : value}}));
+                             }
+                             else if (slave == Cookies.get('identity')) {
+                                 console.log("send skin : slave 1");
+                                 console.log(slave);
+                                 webSocket.send(
+                                     JSON.stringify({type : "slave-skin",
+                                                     name : Cookies.get('identity'),
+                                                     params : {key : key,
+                                                               value : value}}));
+                             }
+                             // WEBSOCKET_SEND_MESSAGE2(key, value);
+                         };
+
                          vtag1.callback = (points) => {
-                             console.log(slave);
+                             // console.log(slave);
                              if (webSocket.readyState == 1) {
                                  // console.log(points);
                                  // WEBSOCKET_SEND_MESSAGE1(points)
@@ -615,7 +666,6 @@
                                                          params : points}));
                                  }
                                  else if (slave == Cookies.get('identity')) {
-                                     console.log("slave???");
                                      webSocket.send(
                                          JSON.stringify({type : "slave-points",
                                                          name : Cookies.get('identity'),
@@ -623,8 +673,36 @@
                                  }
                              }
                          };
-                         
+                         stag.recognizer_active = true;
+                         stag.comp_active = true;
+
+                         stag.callback = (text, v, p, r) => {
+                             if (webSocket.readyState == 1) {
+                                 console.log("send talk : 1");
+                                 webSocket.send(
+                                     JSON.stringify({type : "talk",
+                                                     name : Cookies.get('identity'),
+                                                     params :{text : text,
+                                                              voice : v,
+                                                              pitch : p,
+                                                              rate : r}}));
+                                 webSocket.send(
+                                     JSON.stringify({type : "message",
+                                                     name : Cookies.get('identity'),
+                                                     params : text}));
+                             }
+                         };
+
+                         console.log("set texture 696");
+                         vtag1.self_active = true;
+                         vtag1.set_texture("BG", slave_bg);
+                         vtag1.set_texture("FACE", slave_face);
+                         vtag2.comp_active = true;
+                         vtag2.set_texture("BG", master_bg);
+                         vtag2.set_texture("FACE", master_face);
+
                      } else {
+                         console.log("set texture 705");
                          vtag2.comp_active = true;
                          vtag2.set_texture("BG", slave_bg);
                          vtag2.set_texture("FACE", slave_face);

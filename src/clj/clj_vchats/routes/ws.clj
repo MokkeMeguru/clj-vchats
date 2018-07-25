@@ -68,38 +68,43 @@
              (doseq [channel in-channels]
                (send! channel msg)))
            ))
-        "talk"
-        (let [uname (:name mmsg)
-              params (:params mmsg)
-              text (:text params)
-              voice (if (:voice params) (:voice params) "sumire")
-              rate (if (and (:rate params) (> (:rate params) 0.0) (> 2.0 (:rate params))) (:rate params) 1.0)
-              pitch (if (and (:pitch params) (> (:pitch params) 0.0) (> 2.0 (:rate params))) (:pitch params) 1.0)]
-          (print mmsg)
-          ;; TODO: check uname in (channel's master_name invite_name)
-          (if text
-            (let [b64-voice (get-audio-b64 text :voice voice :rate rate :pitch pitch)] ;; TODO: check validation
-              (doseq [channel in-channels]
-                (send! channel (json/write-str
-                                {:type "voice-data"
-                                 :name uname
-                                 :params b64-voice}))))))
         "slave-skin"
-        (let [params (:params mmsg)
-              uname (:name mmsg)
-              k (:key params)
-              v (:value params)]
-          ;; save slave skin
-          (when (skin/save-slave-skin uname k v channel-name)
-            (doseq [channel in-channels] (send! channel msg))))
+        (do
+          (println "slave-skin")
+          (let [params (:params mmsg)
+               uname (:name mmsg)
+               k (:key params)
+               v (:value params)]
+           ;; save slave skin
+           (when (skin/save-slave-skin uname k v channel-name)
+             (doseq [channel in-channels] (send! channel msg)))))
         "master-skin"
-        (let [params (:params mmsg)
-              uname (:name mmsg)
-              k (:key params)
-              v (:value params)]
-          ;; save master skin
-          (when (skin/save-master-skin uname k v channel-name)
-            (doseq [channel in-channels] (send! channel msg))))
+        (do
+          (println "master-skin")
+          (let [params (:params mmsg)
+                uname (:name mmsg)
+                k (:key params)
+                v (:value params)]
+            ;; save master skin
+            (when (skin/save-master-skin uname k v channel-name)
+              (doseq [channel in-channels] (send! channel msg)))))
+        "talk"
+        (do
+          (let [uname (:name mmsg)
+                params (:params mmsg)
+                text (:text params)
+                voice (if (:voice params) (:voice params) "sumire")
+                rate (if (and (:rate params) (> (:rate params) 0.0) (> 2.0 (:rate params))) (:rate params) 1.0)
+                pitch (if (and (:pitch params) (> (:pitch params) 0.0) (> 2.0 (:rate params))) (:pitch params) 1.0)]
+            (print mmsg)
+            ;; TODO: check uname in (channel's master_name invite_name)
+            (if text
+              (let [b64-voice (get-audio-b64 text :voice voice :rate rate :pitch pitch)] ;; TODO: check validation
+                (doseq [channel in-channels]
+                  (send! channel (json/write-str
+                                  {:type "voice-data"
+                                   :name uname
+                                   :params b64-voice})))))))
         (doseq [channel in-channels] (send! channel msg)))
       (doseq [channel in-channels]
         (send! channel (json/write-str {:type "error"

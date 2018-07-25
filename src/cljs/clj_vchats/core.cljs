@@ -7,7 +7,9 @@
             [markdown.core :refer [md->html]]
             [ajax.core :refer [GET POST]]
             [clj-vchats.ajax :refer [load-interceptors!]]
-            [clj-vchats.events])
+            [clj-vchats.events]
+            [cljsjs.pixi]
+            [clj-vchats.components.pixi-texture-mesh :as ptm])
   (:import goog.History))
 
 (defn nav-link [uri title page]
@@ -44,13 +46,18 @@
       [:div {:dangerouslySetInnerHTML
              {:__html (md->html docs)}}]])])
 
+(defn secret-page []
+  [:div])
+;; (ptm/set-animation)
+
 (def pages
-  {:home #'home-page
-   :about #'about-page})
+  {:home #'secret-page
+   :about #'about-page
+   :secret #'secret-page})
 
 (defn page []
   [:div
-   [navbar]
+   ;; [navbar]
    [(pages @(rf/subscribe [:page]))]])
 
 ;; -------------------------
@@ -63,6 +70,8 @@
 (secretary/defroute "/about" []
   (rf/dispatch [:set-active-page :about]))
 
+(secretary/defroute "/knocking-door" []
+  (rf/dispatch [:set-active-page :secret]))
 ;; -------------------------
 ;; History
 ;; must be called after routes have been defined
@@ -84,8 +93,10 @@
   (r/render [#'page] (.getElementById js/document "app")))
 
 (defn init! []
+  (print "loaded")
   (rf/dispatch-sync [:initialize-db])
   (load-interceptors!)
   (fetch-docs!)
+  (ptm/view)
   (hook-browser-navigation!)
   (mount-components))

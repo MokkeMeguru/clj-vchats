@@ -15,3 +15,405 @@ Notifying browser that CSS file changed: resources/public/css/RESISTER.css
 Notifying browser that CSS file changed: resources/public/css/RESISTER.css
 Notifying browser that CSS file changed: resources/public/css/style_channel_list.css
 Notifying browser that CSS file changed: resources/public/css/style_test.css
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 2.034 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/goog/deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.579 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.499 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.541 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.489 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.388 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.364 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.393 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.592 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.625 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.756 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 4.382 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/goog/deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.872 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 3.776 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/goog/deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.74 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.554 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.608 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.669 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.535 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.462 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[31mFailed to compile build :app from ["src/cljs" "src/cljc" "env/dev/cljs"] in 0.494 seconds.[0m
+[36m----  Could not Analyze  src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:5  column:1  ----[0m
+
+  [1mWrong number of args (0) passed to: core/defn--4531[0m
+
+  [36m3[0m  [36m(def app (js/PIXI.Application.))[0m
+  [36m4[0m  [36m[0m
+  [33m5[0m  [1m(defn )[0m
+  [0m [0m  [33m^--- Wrong number of args (0) passed to: core/defn--4531[0m
+
+[36m----  Analysis Error : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.414 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.348 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.433 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.377 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.34 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.328 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.378 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.388 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.36 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.435 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.379 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.381 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.406 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.34 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.336 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.302 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.233 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[31mFailed to compile build :app from ["src/cljs" "src/cljc" "env/dev/cljs"] in 0.472 seconds.[0m
+[36m----  Could not Analyze  src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:7  column:3  ----[0m
+
+  [1mlet requires an even number of forms in binding vector[0m
+
+  [36m 6[0m  [36m(defn set-animation [][0m
+  [33m 7[0m  [1m  (let [points (map (fn [i] (* i 45)) (range 25))[0m
+  [0m  [0m  [33m  ^--- let requires an even number of forms in binding vector[0m
+  [36m 8[0m  [36m        (-> (.. js/document -body) (.appendChild (.view app)))][0m
+  [36m 9[0m  [36m    [0m
+  [36m10[0m  [36m    ))[0m
+
+[36m----  Analysis Error : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.294 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.354 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.352 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.303 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.419 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.452 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.312 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[36m----  Compiler Warning on   src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:16  column:16  ----[0m
+
+  [1mNo such namespace: r, could not locate r.cljs, r.cljc, or JavaScript source providing "r"[0m
+
+  [36m12[0m  [36m    g (js/PIXI.Graphics.)[0m
+  [36m13[0m  [36m    _ (set! (.-x g) (.-x strip))[0m
+  [36m14[0m  [36m    _ (set! (.-y g) (.-y strip))[0m
+  [36m15[0m  [36m    _ (.addChild (.-stage app) g)[0m
+  [33m16[0m  [1m    count (r/atom 0)[0m
+  [0m  [0m  [33m           ^--- No such namespace: r, could not locate r.cljs, r.cljc, or JavaScript source providing "r"[0m
+  [36m17[0m  [36m    _ (.add (.-ticker app)[0m
+  [36m18[0m  [36m            (fn [] ()))][0m
+  [36m19[0m  [36m))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:16  column:16  ----[0m
+
+  [1mUse of undeclared Var r/atom[0m
+
+  [36m12[0m  [36m    g (js/PIXI.Graphics.)[0m
+  [36m13[0m  [36m    _ (set! (.-x g) (.-x strip))[0m
+  [36m14[0m  [36m    _ (set! (.-y g) (.-y strip))[0m
+  [36m15[0m  [36m    _ (.addChild (.-stage app) g)[0m
+  [33m16[0m  [1m    count (r/atom 0)[0m
+  [0m  [0m  [33m           ^--- Use of undeclared Var r/atom[0m
+  [36m17[0m  [36m    _ (.add (.-ticker app)[0m
+  [36m18[0m  [36m            (fn [] ()))][0m
+  [36m19[0m  [36m))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.37 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.417 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.297 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.398 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[36m----  Compiler Warning on   src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:21  column:19  ----[0m
+
+  [1mWrong number of args (0) passed to cljs.core/map[0m
+
+  [36m17[0m  [36m    count (r/atom 0)[0m
+  [36m18[0m  [36m    _ (.add (.-ticker app)[0m
+  [36m19[0m  [36m            (fn [][0m
+  [36m20[0m  [36m              (swap! count #(+ 0.1 %))[0m
+  [33m21[0m  [1m              (map )))][0m
+  [0m  [0m  [33m              ^--- Wrong number of args (0) passed to cljs.core/map[0m
+  [36m22[0m  [36m))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.394 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.367 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[36m----  Compiler Warning on   src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:26  column:20  ----[0m
+
+  [1mUse of undeclared Var clj-vchats.components.pixi-texture-mesh/renderPoints[0m
+
+  [36m22[0m  [36m                     (set! (.-y (nth @points i))[0m
+  [36m23[0m  [36m                           (js/Math.sin (+ @count (* i 0.5))))[0m
+  [36m24[0m  [36m                     (set! (.-x (nth @points i))[0m
+  [36m25[0m  [36m                           (js/Math.sin (+ @count (* i 0.5))))) (range 25))[0m
+  [33m26[0m  [1m              (renderPoints)))[0m
+  [0m  [0m  [33m               ^--- Use of undeclared Var clj-vchats.components.pixi-texture-mesh/renderPoints[0m
+  [36m27[0m  [36m    ][0m
+  [36m28[0m  [36m))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.486 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[36m----  Compiler Warning on   src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:27  column:20  ----[0m
+
+  [1mUse of undeclared Var clj-vchats.components.pixi-texture-mesh/renderPoints[0m
+
+  [36m23[0m  [36m                     (set! (.-y (nth @points i))[0m
+  [36m24[0m  [36m                           (js/Math.sin (+ @count (* i 0.5))))[0m
+  [36m25[0m  [36m                     (set! (.-x (nth @points i))[0m
+  [36m26[0m  [36m                           (js/Math.sin (+ @count (* i 0.5))))) (range 25))[0m
+  [33m27[0m  [1m              (renderPoints)))[0m
+  [0m  [0m  [33m               ^--- Use of undeclared Var clj-vchats.components.pixi-texture-mesh/renderPoints[0m
+  [36m28[0m  [36m    ][0m
+  [36m29[0m  [36m))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.453 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[36m----  Compiler Warning on   src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:26  column:20  ----[0m
+
+  [1mUse of undeclared Var clj-vchats.components.pixi-texture-mesh/renderPoints[0m
+
+  [36m22[0m  [36m                     (set! (.-y (nth @points i))[0m
+  [36m23[0m  [36m                           (js/Math.sin (+ @count (* i 0.5))))[0m
+  [36m24[0m  [36m                     (set! (.-x (nth @points i))[0m
+  [36m25[0m  [36m                           (js/Math.sin (+ @count (* i 0.5))))) (range 25))[0m
+  [33m26[0m  [1m              (renderPoints)))[0m
+  [0m  [0m  [33m               ^--- Use of undeclared Var clj-vchats.components.pixi-texture-mesh/renderPoints[0m
+  [36m27[0m  [36m    ][0m
+  [36m28[0m  [36m))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.35 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.514 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.426 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.264 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.336 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.898 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.324 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.354 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.273 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.278 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[31mFailed to compile build :app from ["src/cljs" "src/cljc" "env/dev/cljs"] in 0.133 seconds.[0m
+[36m----  Could not Analyze  src/cljs/clj_vchats/core.cljs   line:1  column:1  ----[0m
+
+  [1mOnly :as alias, :refer (names) and :rename {from to} options supported in :require; offending spec: [clj-vchats.components.pixi-texture-mesh [set-animation]] at line 1 src/cljs/clj_vchats/core.cljs[0m
+
+  [33m1[0m  [1m(ns clj-vchats.core[0m
+  [0m [0m  [33m^--- Only :as alias, :refer (names) and :rename {from to} options supported in :require; offending spec: [clj-vchats.components.pixi-texture-mesh [set-animation]] at line 1 src/cljs/clj_vchats/core.cljs[0m
+  [36m2[0m  [36m  (:require [reagent.core :as r][0m
+  [36m3[0m  [36m            [re-frame.core :as rf][0m
+  [36m4[0m  [36m            [secretary.core :as secretary][0m
+
+[36m----  Analysis Error : Please see src/cljs/clj_vchats/core.cljs  ----[0m
+Figwheel: Can't open  ("src/cljs/clj_vchats/core.cljs" 1 1) No :open-file-command supplied in the config.
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.301 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.348 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.405 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.392 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/cljs_deps.js
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.618 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.429 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.424 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 2.363 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[36m----  Compiler Warning on   src/cljs/clj_vchats/components/pixi_texture_mesh.cljs   line:9  column:52  ----[0m
+
+  [1mUse of undeclared Var clj-vchats.components.pixi-texture-mesh/app2[0m
+
+  [36m 5[0m  [36m(def app (js/PIXI.Application.))[0m
+  [36m 6[0m  [36m[0m
+  [36m 7[0m  [36m(defn set-animation [][0m
+  [36m 8[0m  [36m  (let [points (r/atom (map (fn [i] (js/PIXI.Point. (* i 45) 0)) (range 25)))[0m
+  [33m 9[0m  [1m        _ (-> (.. js/document -body) (.appendChild app2))[0m
+  [0m  [0m  [33m                                                   ^--- Use of undeclared Var clj-vchats.components.pixi-texture-mesh/app2[0m
+  [36m10[0m  [36m        strip (js/PIXI.Texture.fromImage "/img/snake.png" points)[0m
+  [36m11[0m  [36m        _ (set! (.-x strip) -40)[0m
+  [36m12[0m  [36m        _ (set! (.-y strip) 300)[0m
+  [36m13[0m  [36m        g (js/PIXI.Graphics.)[0m
+  [36m14[0m  [36m        _ (set! (.-x g) (.-x strip))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/clj_vchats/components/pixi_texture_mesh.cljs  ----[0m
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.49 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.541 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.657 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.63 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.55 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 4.107 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.362 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.165 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.227 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.448 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.338 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/core.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.21 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js
+Compiling build :app to "target/cljsbuild/public/js/app.js" from ["src/cljs" "src/cljc" "env/dev/cljs"]...
+[32mSuccessfully compiled build :app to "target/cljsbuild/public/js/app.js" in 1.271 seconds.[0m
+notifying browser that file changed:  target/cljsbuild/public/js/out/clj_vchats/components/pixi_texture_mesh.js

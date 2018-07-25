@@ -29,7 +29,8 @@
      :bdoy {:message "not found"}}))
 
 
- (db/get-skin {:chan_name "test"})
+;; (db/get-skin {:chan_name "test"})
+
 ;; (db/get-channel {:chan_name "test"})
 
 
