@@ -20,7 +20,8 @@ export default class VTuberFrame extends HTMLElement{
     super();
     this.attachShadow({mode: "open"});
     this.shadowRoot.innerHTML = `
-      <style>
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <style>
         #display-container {
           display: flex;
           width: 600px;
@@ -34,7 +35,7 @@ export default class VTuberFrame extends HTMLElement{
           height: 400px;
           width: 300px;
           z-index: 2;
-          right: 0px;
+          right: 0;
         }
 
         #video {
@@ -47,19 +48,27 @@ export default class VTuberFrame extends HTMLElement{
         }
 
         #option-bg, #option-face {
-          background-color: #cccccc;
-          height = 100%;
-          overflow-y: hidden;
+          background-color: #404040;
           flex-grow: 1;
           flex-basis: 100%;
           text-align: center;
+          position: relative;
+          right:25px;
+          
         }
 
         .option-title {
-          color: red;
+          color: #FF5959;
           text-align: center;
-          height: 10%;
-          font-size: 30px;
+          height: 30px;
+          font-size: 25px;
+          font-family: HG丸ｺﾞｼｯｸM-PRO; 
+          border: white solid 1px;
+          margin: 2px 2px 2px 2px;
+          padding-top: 2px;
+        }
+        .obc{
+        
         }
 
         .icon {
@@ -70,7 +79,14 @@ export default class VTuberFrame extends HTMLElement{
           border-style: solid;
           border-width: 2px;
           margin: 3px;
-          border-color: rgb(255,0,0);
+          border-color:  #FF5959;
+          
+        }
+        img:hover{
+         border-style: solid;
+          border-width: 2px;
+          margin: 3px;
+          border-color:  #FF5959;
         }
 
         canvas {
@@ -86,12 +102,20 @@ export default class VTuberFrame extends HTMLElement{
           right: 0;
           top: 0;
           background-color: rgb(255,255,255,0.8);
-          height: 30px;
-          width: 30px;
+          height: 31px;
+          width: 31px;
           font-size: 20px;
           text-align:center;
           font-weight: bold;
           border-style: solid;
+          margin-top:2px ;
+          margin-right: 2px;
+        }
+
+        .fas:: before {
+            font-family: "Font Awesome\ 5 Free";
+            font-weight: 900;
+            content: "\f013";
         }
 
         #white-screen {
@@ -100,7 +124,7 @@ export default class VTuberFrame extends HTMLElement{
           position: absolute;
           top: 0;
           left: 0;
-          width: 600px;
+          width: 280px;
           height: 400px;
           background-color: rgb(255,255,255,0.5);
         }
@@ -108,18 +132,22 @@ export default class VTuberFrame extends HTMLElement{
         .active {
           transform: translateX(-300px);
         }
+        .fas{
+        z-index: 10;
+       color:black;
+        }
       </style>
 
       <div id="display-container">
         <video id="video"></video>
-        <div id="op-btn">x</div>
+        <div id="op-btn"><i id="btn_ftn" class="fas fa-cog"></i></div>
         <div id="option">
           <div id="option-bg">
-            <div class="option-title">背景</div>
+            <div class="option-title obc">背景</div>
             <div id="bg-container"></div>
           </div>
           <div id="option-face">
-            <div class="option-title">顔</div>
+            <div class="option-title opc">顔</div>
             <div id="face-container"></div>
           </div>
         </div>
@@ -133,15 +161,22 @@ export default class VTuberFrame extends HTMLElement{
     this.renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
     this.canvas = this.renderer.view;
     this.option = this.shadowRoot.getElementById("option");
-    this.op_btn = this.shadowRoot.getElementById("op-btn");
+      this.op_btn = this.shadowRoot.getElementById("op-btn");
+      this.btn_ftn= this.shadowRoot.getElementById("btn_ftn");
     this.white_screen = this.shadowRoot.getElementById("white-screen");
     this.op_btn.addEventListener("click", (event) => {
-      if (this.option.style.display == "none" || this.option.style.display == "") {
+      if (this.option.style.display == "none" || this.option.style.display == "") { // !!!
         this.white_screen.style.display = "inline";
-        this.option.style.display = "flex";
+          this.option.style.display = "flex";
+          this.btn_ftn.style.color="#FF5959";
+          this.btn_ftn.classList.remove("fa-fog");
+          this.btn_ftn.classList.add("fa-times");
+
       } else {
         this.white_screen.style.display = "none";
-        this.option.style.display = "none";
+          this.option.style.display = "none";
+          this.btn_ftn.style.color="black";
+          this.btn_ftn.classList.remove("fa-times");
       }
     });
     this.container.insertBefore(this.canvas, this.op_btn);
@@ -189,7 +224,8 @@ export default class VTuberFrame extends HTMLElement{
     }
 
     this.set_texture = (key, value) => {
-      if (key == FACE_KEY) {
+        if (key == FACE_KEY) {
+            this.face_idx = value;
         this.set_face_texture(this.face_textures[value][0]);
       } else if (key == BG_KEY) {
         this.set_bg_texture(this.bg_textures[value]);
@@ -320,7 +356,7 @@ export default class VTuberFrame extends HTMLElement{
       }
       let w = this.distance(points[LEFT], points[RIGHT]);
       let h = this.distance(points[CHIN], points[NOUSE])*2;
-      let r = -this.rotate(points[LEFT], points[RIGHT], points[BROW], points[CHIN]);
+        let r = -this.rotate(points[LEFT], points[RIGHT], points[BROW], points[CHIN]);
 
       this.face_sprite.anchor.x = 0.5;
       this.face_sprite.anchor.y = 0.5;
@@ -334,7 +370,12 @@ export default class VTuberFrame extends HTMLElement{
         this.smoothing_height.put(h);
         this.smoothing_rot.put(r);
 
-        if (this.smoothing_posX.is_ready() && this.smoothing_posY.is_ready()) {
+          if (this.smoothing_posX.is_ready() &&
+              this.smoothing_posY.is_ready() &&
+              this.smoothing_width.is_ready() &&
+              this.smoothing_height.is_ready() &&
+              this.smoothing_rot.is_ready())
+          {
           this.face_sprite.position.x = this.smoothing_posX.get();
           this.face_sprite.position.y = this.smoothing_posY.get();
           this.face_sprite.width = this.smoothing_width.get();
